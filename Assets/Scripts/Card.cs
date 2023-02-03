@@ -6,6 +6,5 @@ public class Card
     public Card(int _id, string _cardName){
         this.id = _id;
         this.cardName = _cardName;
-        
     }
 }
