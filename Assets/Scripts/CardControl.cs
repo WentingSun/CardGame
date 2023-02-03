@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardDragDrop : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler,IDropHandler
+public class CardControl : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler,IDropHandler
 {
 
     [SerializeField] private Canvas canvas;
@@ -22,12 +22,12 @@ public class CardDragDrop : MonoBehaviour, IPointerClickHandler, IBeginDragHandl
     {
          Debug.Log("OnBeginDrag");
          canvasGroup.blocksRaycasts = false;
+         transform.SetSiblingIndex(200);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-         eventData.pointerDrag.GetComponent<RectTransform>().pivot = new Vector2(0.5f,0.5f);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -45,8 +45,7 @@ public class CardDragDrop : MonoBehaviour, IPointerClickHandler, IBeginDragHandl
     {
         Debug.Log("OnDrop");
         if (eventData.pointerDrag != null){
-            eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
-            eventData.pointerDrag.GetComponent<RectTransform>().pivot = new Vector2(0.5f,0.65f);
+            eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition + new Vector2(0,-10);
         }
     }
 
