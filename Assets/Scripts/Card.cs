@@ -6,11 +6,21 @@ using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
+
+    public Card Instance;
     public TextMeshProUGUI nameText;
     [SerializeField] Transform parentDuringMove;
     [SerializeField] Transform parentBeforeMove;
     [SerializeField] Collider2D touchedCollider;
     private Vector3 dragOffset;
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    private void Awake()
+    {
+        Instance = this;
+    }
     
     /// <summary>
     /// OnMouseDown is called when the user has pressed the mouse button while
@@ -33,7 +43,9 @@ public class Card : MonoBehaviour
    /// </summary>
    private void OnMouseUp()
    {
-    
+    if(touchedCollider != null){
+        Instance.transform.position = touchedCollider.transform.position + new Vector3(0,-0.22f,0);
+    }
    }
 
    Vector3 getMousePosition()
