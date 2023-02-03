@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 public class CardControl : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler,IDropHandler
 {
 
+    public static CardControl instance;
+
     [SerializeField] private Canvas canvas;
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
@@ -14,6 +16,7 @@ public class CardControl : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     /// Awake is called when the script instance is being loaded.
     private void Awake()
     {
+        instance = this;
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
@@ -45,7 +48,7 @@ public class CardControl : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     {
         Debug.Log("OnDrop");
         if (eventData.pointerDrag != null){
-            eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition + new Vector2(0,-10);
+            eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition + new Vector2(0,-30);
         }
     }
 
