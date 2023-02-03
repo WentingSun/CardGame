@@ -10,7 +10,7 @@ public class Card : MonoBehaviour
     public Card Instance;
     public TextMeshProUGUI nameText;
     [SerializeField] Transform parentDuringMove;
-    [SerializeField] Transform parentBeforeMove;
+    [SerializeField] Transform TargetStack;
     [SerializeField] Collider2D touchedCollider;
     [SerializeField] GameObject stack_Prefabs;
     [SerializeField] GameObject canvas;
@@ -52,10 +52,10 @@ public class Card : MonoBehaviour
    private void OnMouseUp()
    {
     if(touchedCollider != null){//TODO
-        Instance.transform.position = touchedCollider.transform.position + new Vector3(0,-0.22f,0);
+        Instance.transform.position = getLowestPosition(TargetStack) + new Vector3(0,-0.22f,0);
         Instance.transform.SetParent(touchedCollider.transform.parent);
     }else {
-        Debug.Log("Should create a stack");
+        // Debug.Log("Should create a stack");
         createStack();
     }
    }
@@ -75,6 +75,7 @@ public class Card : MonoBehaviour
    private void OnTriggerStay2D(Collider2D other)
    {
     touchedCollider = other;
+    TargetStack = other.gameObject.transform.parent;
    }
 
    /// <summary>
@@ -86,12 +87,13 @@ public class Card : MonoBehaviour
    {
     // Debug.Log("Leaveing");
     touchedCollider = null;
+    TargetStack = null;
    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        createStack();
     }
 
     // Update is called once per frame
@@ -103,6 +105,13 @@ public class Card : MonoBehaviour
     private void createStack(){
         GameObject newStack = Instantiate(stack_Prefabs,canvas.transform);
         this.transform.SetParent(newStack.transform);
+    }
+
+    private Vector3 getLowestPosition(Transform targetStack)
+    {
+        Debug.Log(targetStack.childCount);
+        var result = targetStack.GetChild(targetStack.childCount -1 ).position;
+        return result;
     }
 
 
