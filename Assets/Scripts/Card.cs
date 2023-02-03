@@ -12,6 +12,9 @@ public class Card : MonoBehaviour
     [SerializeField] Transform parentDuringMove;
     [SerializeField] Transform parentBeforeMove;
     [SerializeField] Collider2D touchedCollider;
+    [SerializeField] GameObject stack_Prefabs;
+    [SerializeField] GameObject canvas;
+
     private Vector3 dragOffset;
 
     /// <summary>
@@ -29,6 +32,11 @@ public class Card : MonoBehaviour
     private void OnMouseDown()
     {
         dragOffset = transform.position - getMousePosition();
+        if (this.transform == this.transform.parent.GetChild(0)){ 
+            GameObject currentStack =this.transform.parent.gameObject;
+            this.transform.SetParent(canvas.transform);
+            Destroy(currentStack);
+        }
     }
     
     private void OnMouseDrag()
@@ -43,8 +51,12 @@ public class Card : MonoBehaviour
    /// </summary>
    private void OnMouseUp()
    {
-    if(touchedCollider != null){
+    if(touchedCollider != null){//TODO
         Instance.transform.position = touchedCollider.transform.position + new Vector3(0,-0.22f,0);
+        Instance.transform.SetParent(touchedCollider.transform.parent);
+    }else {
+        Debug.Log("Should create a stack");
+        createStack();
     }
    }
 
@@ -87,4 +99,11 @@ public class Card : MonoBehaviour
     {
         
     }
+
+    private void createStack(){
+        GameObject newStack = Instantiate(stack_Prefabs,canvas.transform);
+        this.transform.SetParent(newStack.transform);
+    }
+
+
 }
