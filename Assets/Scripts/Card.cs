@@ -10,10 +10,12 @@ public class Card : MonoBehaviour
     public Card Instance;
     public TextMeshProUGUI nameText;
     [SerializeField] Transform parentDuringMove;
-    [SerializeField] Transform TargetStack;
+    [SerializeField] Stack TargetStack;
     [SerializeField] Collider2D touchedCollider;
     [SerializeField] GameObject stack_Prefabs;
     [SerializeField] GameObject canvas;
+
+    [SerializeField] Stack currentStack;
 
     private Vector3 dragOffset;
 
@@ -32,11 +34,16 @@ public class Card : MonoBehaviour
     private void OnMouseDown()
     {
         dragOffset = transform.position - getMousePosition();
-        if (this.transform == this.transform.parent.GetChild(0)){ 
-            GameObject currentStack =this.transform.parent.gameObject;
+
+
+        if (this.transform == currentStack.transform.GetChild(0)){ //TODO Stack removing function
             this.transform.SetParent(canvas.transform);
             Destroy(currentStack);
         }
+
+
+
+
     }
     
     private void OnMouseDrag()
@@ -51,9 +58,10 @@ public class Card : MonoBehaviour
    /// </summary>
    private void OnMouseUp()
    {
-    if(touchedCollider != null){//TODO
-        Instance.transform.position = getLowestPosition(TargetStack) + new Vector3(0,-0.22f,0);
+    if(touchedCollider != null){//TODO Stack adding function
+        Instance.transform.position = getLowestPosition(TargetStack.transform) + new Vector3(0,-0.22f,0);
         Instance.transform.SetParent(touchedCollider.transform.parent);
+        currentStack = TargetStack;
     }else {
         // Debug.Log("Should create a stack");
         createStack();
@@ -75,7 +83,7 @@ public class Card : MonoBehaviour
    private void OnTriggerStay2D(Collider2D other)
    {
     touchedCollider = other;
-    TargetStack = other.gameObject.transform.parent;
+    TargetStack = other.gameObject.transform.parent.GetComponent<Stack>();
    }
 
    /// <summary>
@@ -105,9 +113,10 @@ public class Card : MonoBehaviour
     private void createStack(){
         GameObject newStack = Instantiate(stack_Prefabs,canvas.transform);
         this.transform.SetParent(newStack.transform);
+        currentStack = newStack.GetComponent<Stack>();
     }
 
-    private Vector3 getLowestPosition(Transform targetStack)
+    private Vector3 getLowestPosition(Transform targetStack)//TODO getLowestCardTransform
     {
         Debug.Log(targetStack.childCount);
         var result = targetStack.GetChild(targetStack.childCount -1 ).position;
