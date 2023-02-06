@@ -38,7 +38,7 @@ public class Card : MonoBehaviour
 
         if (this.transform == currentStack.transform.GetChild(0)){ //TODO Stack removing function
             this.transform.SetParent(canvas.transform);
-            Destroy(currentStack);
+            Destroy(currentStack.gameObject);
         }
 
 

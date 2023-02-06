@@ -206,7 +206,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -235,10 +235,11 @@ MonoBehaviour:
   Instance: {fileID: 0}
   nameText: {fileID: 0}
   parentDuringMove: {fileID: 0}
-  parentBeforeMove: {fileID: 0}
+  TargetStack: {fileID: 0}
   touchedCollider: {fileID: 0}
   stack_Prefabs: {fileID: 2773396661376135617, guid: 65528a87f85deee4db96f2806dcfdb3d, type: 3}
   canvas: {fileID: 0}
+  currentStack: {fileID: 0}
 --- !u!50 &3335561277953737644
 Rigidbody2D:
   serializedVersion: 4
