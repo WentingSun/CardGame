@@ -16,6 +16,7 @@ public class Card : MonoBehaviour
     [SerializeField] GameObject canvas;
 
     [SerializeField] Stack currentStack;
+    [SerializeField] List<Transform> upperCards;
 
     private Vector3 dragOffset;
 
@@ -26,6 +27,14 @@ public class Card : MonoBehaviour
     {
         Instance = this;
     }
+
+    private void AddingUpperCards(){
+        upperCards = new List<Transform>();
+        for(int i = transform.GetSiblingIndex(); i < currentStack.transform.childCount; i++ ){
+            upperCards.Add(currentStack.transform.GetChild(i));
+        }
+        // Debug.Log("C");
+    }
     
     /// <summary>
     /// OnMouseDown is called when the user has pressed the mouse button while
@@ -35,21 +44,37 @@ public class Card : MonoBehaviour
     {
         dragOffset = transform.position - getMousePosition();
 
+        AddingUpperCards();
 
         if (this.transform == currentStack.transform.GetChild(0)){ //TODO Stack removing function
-            this.transform.SetParent(canvas.transform);
+            foreach(Transform card in upperCards){
+                card.SetParent(canvas.transform);
+                card.gameObject.GetComponent<Collider2D>().enabled = false;
+            }
+                this.gameObject.GetComponent<Collider2D>().enabled = true;
+            // Debug.Log("D");
             Destroy(currentStack.gameObject);
+        }else{
+             this.transform.SetParent(canvas.transform);
         }
 
 
 
 
     }
+
+    
     
     private void OnMouseDrag()
    {
-    transform.position = getMousePosition() + dragOffset;
-    transform.SetSiblingIndex(200);
+    
+    upperCards[0].position = getMousePosition() + dragOffset;
+    for(int i = 1; i < upperCards.Count; i++){
+        upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f*i,0)  ;
+    }
+
+    // transform.position = getMousePosition() + dragOffset;
+    // transform.SetSiblingIndex(200);
    }
    
    /// <summary>
@@ -66,6 +91,11 @@ public class Card : MonoBehaviour
         // Debug.Log("Should create a stack");
         createStack();
     }
+    foreach(Transform card in upperCards){
+        card.gameObject.GetComponent<Collider2D>().enabled = true;
+        card.SetParent(currentStack.transform);
+    }
+    upperCards = null;
    }
 
    Vector3 getMousePosition()
