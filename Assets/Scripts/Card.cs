@@ -33,7 +33,8 @@ public class Card : MonoBehaviour
         for(int i = transform.GetSiblingIndex(); i < currentStack.transform.childCount; i++ ){
             upperCards.Add(currentStack.transform.GetChild(i));
         }
-        // Debug.Log("C");
+        Debug.Log(transform.GetSiblingIndex());
+        Debug.Log(currentStack.transform.childCount);
     }
     
     /// <summary>
@@ -42,7 +43,7 @@ public class Card : MonoBehaviour
     /// </summary>
     private void OnMouseDown()
     {
-        dragOffset = transform.position - getMousePosition();
+        dragOffset = this.transform.position - getMousePosition();
 
         AddingUpperCards();
 
@@ -52,10 +53,15 @@ public class Card : MonoBehaviour
                 card.gameObject.GetComponent<Collider2D>().enabled = false;
             }
                 this.gameObject.GetComponent<Collider2D>().enabled = true;
-            // Debug.Log("D");
+            Debug.Log("D");
             Destroy(currentStack.gameObject);
         }else{
-             this.transform.SetParent(canvas.transform);
+            Debug.Log("H");
+            foreach(Transform card in upperCards){
+                card.SetParent(canvas.transform);
+                card.gameObject.GetComponent<Collider2D>().enabled = false;
+            }
+            this.gameObject.GetComponent<Collider2D>().enabled = true;
         }
 
 
@@ -67,10 +73,15 @@ public class Card : MonoBehaviour
     
     private void OnMouseDrag()
    {
-    
+    if(upperCards != null){
     upperCards[0].position = getMousePosition() + dragOffset;
-    for(int i = 1; i < upperCards.Count; i++){
-        upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f*i,0)  ;
+
+        for(int i = 1; i < upperCards.Count; i++){
+            upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f*i,0)  ;
+        }
+    
+    }else{
+    transform.position = getMousePosition() + dragOffset;
     }
 
     // transform.position = getMousePosition() + dragOffset;
@@ -94,6 +105,7 @@ public class Card : MonoBehaviour
     foreach(Transform card in upperCards){
         card.gameObject.GetComponent<Collider2D>().enabled = true;
         card.SetParent(currentStack.transform);
+        card.GetComponent<Card>().currentStack =currentStack;
     }
     upperCards = null;
    }
