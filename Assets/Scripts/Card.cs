@@ -77,7 +77,7 @@ public class Card : MonoBehaviour
     upperCards[0].position = getMousePosition() + dragOffset;
 
         for(int i = 1; i < upperCards.Count; i++){
-            upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f*i,0)  ;
+            upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f,0);
         }
     
     }else{
@@ -92,7 +92,7 @@ public class Card : MonoBehaviour
    /// OnMouseDown is called when the user has pressed the mouse button while
    /// over the GUIElement or Collider.
    /// </summary>
-   private void OnMouseUp()
+   private void OnMouseUp() //TODO adding animation of following
    {
     if(touchedCollider != null){//TODO Stack adding function
         Instance.transform.position = getLowestPosition(TargetStack.transform) + new Vector3(0,-0.22f,0);
@@ -102,11 +102,17 @@ public class Card : MonoBehaviour
         // Debug.Log("Should create a stack");
         createStack();
     }
-    foreach(Transform card in upperCards){
-        card.gameObject.GetComponent<Collider2D>().enabled = true;
-        card.SetParent(currentStack.transform);
-        card.GetComponent<Card>().currentStack =currentStack;
+    for(int i = 1; i< upperCards.Count; i++){
+        upperCards[i].gameObject.GetComponent<Collider2D>().enabled = true;
+        upperCards[i].SetParent(currentStack.transform);
+        upperCards[i].GetComponent<Card>().currentStack =currentStack;
+        upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f,0);
     }
+    // foreach(Transform card in upperCards){
+    //     card.gameObject.GetComponent<Collider2D>().enabled = true;
+    //     card.SetParent(currentStack.transform);
+    //     card.GetComponent<Card>().currentStack =currentStack;
+    // }
     upperCards = null;
    }
 
@@ -163,6 +169,11 @@ public class Card : MonoBehaviour
         Debug.Log(targetStack.childCount);
         var result = targetStack.GetChild(targetStack.childCount -1 ).position;
         return result;
+    }
+
+    public void followAnimation(Transform target, Transform follower){
+        
+
     }
 
 
