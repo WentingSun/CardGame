@@ -16,6 +16,25 @@ public class Stack : MonoBehaviour
         stackedCards.Remove(card);
     }
 
+    public void updateCardList(){
+        stackedCards.Clear();
+        for(int i =0 ; i < this.transform.childCount ; i++){
+            stackedCards.Add(transform.GetChild(i).GetComponent<Card>());
+        }
+    }
+
+    public void disableCollider(){
+        for(int i = 0; i < stackedCards.Count ; i++){
+            stackedCards[i].gameObject.GetComponent<Collider2D>().enabled = false;
+        }
+    }
+
+    public void enableCollider(){
+        for(int i = 0; i < stackedCards.Count ; i++){
+            stackedCards[i].gameObject.GetComponent<Collider2D>().enabled = true;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +44,6 @@ public class Stack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // updateCardList();
     }
 }

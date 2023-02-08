@@ -44,6 +44,7 @@ public class Card : MonoBehaviour
     private void OnMouseDown()
     {
         dragOffset = this.transform.position - getMousePosition();
+        Stack stack = currentStack;
 
         AddingUpperCards();
 
@@ -53,17 +54,19 @@ public class Card : MonoBehaviour
                 card.gameObject.GetComponent<Collider2D>().enabled = false;
             }
                 this.gameObject.GetComponent<Collider2D>().enabled = true;
-            Debug.Log("D");
+            // Debug.Log("D");
             Destroy(currentStack.gameObject);
         }else{
-            Debug.Log("H");
+            // Debug.Log("H");
             foreach(Transform card in upperCards){
                 card.SetParent(canvas.transform);
                 card.gameObject.GetComponent<Collider2D>().enabled = false;
             }
             this.gameObject.GetComponent<Collider2D>().enabled = true;
         }
-
+        stack.updateCardList();
+        stack.disableCollider();
+        stack.enableCollider();
 
 
 
@@ -83,9 +86,6 @@ public class Card : MonoBehaviour
     }else{
     transform.position = getMousePosition() + dragOffset;
     }
-
-    // transform.position = getMousePosition() + dragOffset;
-    // transform.SetSiblingIndex(200);
    }
    
    /// <summary>
@@ -103,7 +103,7 @@ public class Card : MonoBehaviour
         createStack();
     }
     for(int i = 1; i< upperCards.Count; i++){
-        upperCards[i].gameObject.GetComponent<Collider2D>().enabled = true;
+        // upperCards[i].gameObject.GetComponent<Collider2D>().enabled = true;
         upperCards[i].SetParent(currentStack.transform);
         upperCards[i].GetComponent<Card>().currentStack =currentStack;
         upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f,0);
@@ -113,6 +113,9 @@ public class Card : MonoBehaviour
     //     card.SetParent(currentStack.transform);
     //     card.GetComponent<Card>().currentStack =currentStack;
     // }
+    currentStack.updateCardList();
+    currentStack.disableCollider();
+    currentStack.enableCollider();
     upperCards = null;
    }
 
@@ -146,6 +149,11 @@ public class Card : MonoBehaviour
     TargetStack = null;
    }
 
+   private void OnMouseOver(){
+    string text = this.transform.gameObject.name;
+    Debug.Log(text);
+   }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -157,6 +165,7 @@ public class Card : MonoBehaviour
     {
         
     }
+    
 
     private void createStack(){
         GameObject newStack = Instantiate(stack_Prefabs,canvas.transform);
