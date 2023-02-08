@@ -32,6 +32,7 @@ public class Stack : MonoBehaviour
     public void enableCollider(){
         for(int i = 0; i < stackedCards.Count ; i++){
             stackedCards[i].gameObject.GetComponent<Collider2D>().enabled = true;
+            stackedCards[i].gameObject.transform.position += new Vector3(0,0,-i);
         }
     }
 
