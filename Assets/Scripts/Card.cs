@@ -9,7 +9,7 @@ public class Card : MonoBehaviour
 
     public Card Instance;
     [SerializeField] int cardId;
-    public Slider loadingBar;
+    public LoadingBarControl loadingBar;
     public TextMeshProUGUI nameText;
     [SerializeField] Transform parentDuringMove;
     [SerializeField] Stack TargetStack;
@@ -36,7 +36,7 @@ public class Card : MonoBehaviour
 
     private void getLoadingBar(){
         // Debug.Log(this.transform.GetChild(3).gameObject.GetComponent<Slider>());
-        loadingBar = this.transform.GetChild(3).GetComponent<Slider>();
+        loadingBar = this.transform.GetChild(3).GetComponent<LoadingBarControl>();
     }
 
     private void AddingUpperCards(){
@@ -66,7 +66,7 @@ public class Card : MonoBehaviour
             }
                 this.gameObject.GetComponent<Collider2D>().enabled = true;
             // Debug.Log("D");
-            Destroy(currentStack.gameObject);
+            currentStack.destroyStack();
         }else{
             // Debug.Log("H");
             foreach(Transform card in upperCards){
@@ -166,8 +166,8 @@ public class Card : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        createStack();
         getLoadingBar();
+        createStack();  
     }
 
     // Update is called once per frame

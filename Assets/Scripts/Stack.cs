@@ -42,13 +42,11 @@ public class Stack : MonoBehaviour
     private void checkStackState(){
         updateCardIds();
         for(int i = 0; i < stackedCards.Count; i++){
-            if(i == 0 && true){//TODO add some check
+            if(i == 0 && true){//TODO add some check, true for processing the stack.
                 // processingLoad(stackedCards[i].loadingBar,10);
-                Debug.Log(stackedCards[i]);
-                Debug.Log(stackedCards[i].loadingBar);
-                stackedCards[i].loadingBar.gameObject.SetActive(true);
+                stackedCards[i].loadingBar.processingLoad(10);
             }else{
-                stackedCards[i].loadingBar.gameObject.SetActive(false);
+                stackedCards[i].loadingBar.Enable(false);
             }
         }
     }
@@ -62,20 +60,20 @@ public class Stack : MonoBehaviour
     }
 
     public void destroyStack(){
-        stackedCards[0].loadingBar.gameObject.SetActive(false);
+        stackedCards[0].loadingBar.Enable(false);
         Destroy(this.gameObject);
     }
 
-    private void processingLoad(Slider loadingBar, float duration){
-        loadingBar.gameObject.SetActive(true);
-        loadingBar.maxValue = duration;
-        // bool result = false;
-        // while(loadingBar.value >0){
-        //     loadingBar.value -= Time.deltaTime;
-        // }
-        // result = true;
-        // return result;
-    }
+    // private void processingLoad(Slider loadingBar, float duration){
+    //     loadingBar.gameObject.SetActive(true);
+    //     loadingBar.maxValue = duration;
+    //     // bool result = false;
+    //     // while(loadingBar.value >0){
+    //     //     loadingBar.value -= Time.deltaTime;
+    //     // }
+    //     // result = true;
+    //     // return result;
+    // }
 
     // Start is called before the first frame update
     void Start()

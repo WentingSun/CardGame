@@ -14,6 +14,14 @@ public class LoadingBarControl : MonoBehaviour
         loadingBar.gameObject.SetActive(SetActive);
     }
 
+    public void processingLoad(float duration){
+        Enable(true);
+        maxTime = duration;
+        timeLeft = duration;
+        loadingBar.maxValue = maxTime;
+        loadingBar.value = timeLeft;
+    }
+
     void Start()
     {
         
@@ -22,6 +30,9 @@ public class LoadingBarControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(timeLeft > 0){
+            timeLeft -= Time.deltaTime;
+            loadingBar.value = timeLeft;
+        }
     }
 }
