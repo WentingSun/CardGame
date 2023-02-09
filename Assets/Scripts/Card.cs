@@ -8,6 +8,8 @@ public class Card : MonoBehaviour
 {
 
     public Card Instance;
+    [SerializeField] int cardId;
+    public Slider loadingBar;
     public TextMeshProUGUI nameText;
     [SerializeField] Transform parentDuringMove;
     [SerializeField] Stack TargetStack;
@@ -20,6 +22,10 @@ public class Card : MonoBehaviour
 
     private Vector3 dragOffset;
 
+    public int getCardId(){
+        return this.cardId;
+    }
+
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
@@ -28,13 +34,18 @@ public class Card : MonoBehaviour
         Instance = this;
     }
 
+    private void getLoadingBar(){
+        // Debug.Log(this.transform.GetChild(3).gameObject.GetComponent<Slider>());
+        loadingBar = this.transform.GetChild(3).GetComponent<Slider>();
+    }
+
     private void AddingUpperCards(){
         upperCards = new List<Transform>();
         for(int i = transform.GetSiblingIndex(); i < currentStack.transform.childCount; i++ ){
             upperCards.Add(currentStack.transform.GetChild(i));
         }
-        Debug.Log(transform.GetSiblingIndex());
-        Debug.Log(currentStack.transform.childCount);
+        // Debug.Log(transform.GetSiblingIndex());
+        // Debug.Log(currentStack.transform.childCount);
     }
     
     /// <summary>
@@ -65,7 +76,6 @@ public class Card : MonoBehaviour
             this.gameObject.GetComponent<Collider2D>().enabled = true;
         }
         stack.updateCardList();
-        stack.disableCollider();
         stack.enableCollider();
 
 
@@ -114,7 +124,6 @@ public class Card : MonoBehaviour
     //     card.GetComponent<Card>().currentStack =currentStack;
     // }
     currentStack.updateCardList();
-    currentStack.disableCollider();
     currentStack.enableCollider();
     upperCards = null;
    }
@@ -158,6 +167,7 @@ public class Card : MonoBehaviour
     void Start()
     {
         createStack();
+        getLoadingBar();
     }
 
     // Update is called once per frame
@@ -171,11 +181,12 @@ public class Card : MonoBehaviour
         GameObject newStack = Instantiate(stack_Prefabs,canvas.transform);
         this.transform.SetParent(newStack.transform);
         currentStack = newStack.GetComponent<Stack>();
+        currentStack.updateCardList();
     }
 
     private Vector3 getLowestPosition(Transform targetStack)//TODO getLowestCardTransform
     {
-        Debug.Log(targetStack.childCount);
+        // Debug.Log(targetStack.childCount);
         var result = targetStack.GetChild(targetStack.childCount -1 ).position;
         return result;
     }
