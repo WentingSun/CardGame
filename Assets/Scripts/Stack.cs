@@ -44,11 +44,17 @@ public class Stack : MonoBehaviour
         for(int i = 0; i < stackedCards.Count; i++){
             if(i == 0 && true){//TODO add some check, true for processing the stack.
                 // processingLoad(stackedCards[i].loadingBar,10);
-                stackedCards[i].loadingBar.processingLoad(10);
+                stackedCards[i].loadingBar.processingLoad(10,this);
             }else{
                 stackedCards[i].loadingBar.Enable(false);
             }
         }
+    }
+
+    public void processingStack(){//TODO all processing stack should done by this function, add task id.
+        Debug.Log("ProcessingStack");
+
+        updateCardList();
     }
 
     private void updateCardIds(){

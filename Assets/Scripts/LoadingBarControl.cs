@@ -10,16 +10,19 @@ public class LoadingBarControl : MonoBehaviour
     public float maxTime;
     private float timeLeft;
 
+    private Stack taskStack;
+
     public void Enable(bool SetActive){
         loadingBar.gameObject.SetActive(SetActive);
     }
 
-    public void processingLoad(float duration){
+    public void processingLoad(float duration, Stack stack){//TODO 
         Enable(true);
         maxTime = duration;
         timeLeft = duration;
         loadingBar.maxValue = maxTime;
         loadingBar.value = timeLeft;
+        taskStack = stack;
     }
 
     void Start()
@@ -33,6 +36,10 @@ public class LoadingBarControl : MonoBehaviour
         if(timeLeft > 0){
             timeLeft -= Time.deltaTime;
             loadingBar.value = timeLeft;
+            // Debug.Log(timeLeft);
+        }else if(taskStack != null){
+            Enable(false);
+            taskStack.processingStack();
         }
     }
 }
