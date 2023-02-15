@@ -17,6 +17,8 @@ public class Card : MonoBehaviour
     [SerializeField] GameObject stack_Prefabs;
     [SerializeField] GameObject canvas;
 
+    [SerializeField] int resourceNum;
+
     [SerializeField] Stack currentStack;
     [SerializeField] List<Transform> upperCards;
 
@@ -36,7 +38,7 @@ public class Card : MonoBehaviour
 
     private void getLoadingBar(){
         // Debug.Log(this.transform.GetChild(3).gameObject.GetComponent<Slider>());
-        loadingBar = this.transform.GetChild(3).GetComponent<LoadingBarControl>();
+        loadingBar = this.transform.GetChild(this.transform.childCount-1).GetComponent<LoadingBarControl>();
     }
 
     private void AddingUpperCards(){
@@ -159,14 +161,14 @@ public class Card : MonoBehaviour
    }
 
    private void OnMouseOver(){
-    string text = this.transform.gameObject.name;
-    Debug.Log(text);
+    // string text = this.transform.gameObject.name;
+    // Debug.Log(text);
    }
 
     // Start is called before the first frame update
     void Start()
     {
-        getLoadingBar();
+        // getLoadingBar();
         createStack();  
     }
 
