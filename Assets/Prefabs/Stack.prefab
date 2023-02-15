@@ -50,3 +50,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stackedCards: []
+  cardIds: 
+  cardTemple: {fileID: 3335561277953737641, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
+  cardDatas: []

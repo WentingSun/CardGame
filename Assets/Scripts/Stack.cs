@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,10 @@ public class Stack : MonoBehaviour
 {
     [SerializeField] List<Card> stackedCards;
     [SerializeField] List<int> cardIds;
+
+    [SerializeField] GameObject cardTemple;
+
+    public CardData[] cardDatas;
     
     public void addCard(Card card)
     {
@@ -42,7 +47,7 @@ public class Stack : MonoBehaviour
     private void checkStackState(){
         updateCardIds();
         for(int i = 0; i < stackedCards.Count; i++){
-            if(i == 0 && true){//TODO add some check, true for processing the stack.
+            if(i == 0 && checkCardCombine()){//TODO add some check, true for processing the stack.
                 // processingLoad(stackedCards[i].loadingBar,10);
                 stackedCards[i].loadingBar.processingLoad(10,this);
             }else{
@@ -51,9 +56,16 @@ public class Stack : MonoBehaviour
         }
     }
 
+    private bool checkCardCombine(){
+        if(cardIds.Contains(1)){
+            return true;
+            }
+        return false;
+    }
+
     public void processingStack(){//TODO all processing stack should done by this function, add task id.
         Debug.Log("ProcessingStack");
-
+        createCard(cardDatas[2]);
         updateCardList();
     }
 
@@ -62,6 +74,15 @@ public class Stack : MonoBehaviour
         foreach(Card card in stackedCards){
             this.cardIds.Add(card.getCardId());
         }
+        
+    }
+
+    public void createCard(CardData cardData){
+        GameObject newCard = Instantiate(cardTemple, this.transform);
+        newCard.GetComponent<Card>().currentStack = this;
+        newCard.GetComponent<Card>().cardData = cardData;
+        newCard.GetComponent<Card>().loadCardData();
+        newCard.transform.position = stackedCards[stackedCards.Count-1].transform.position + new Vector3(0,-0.22f,0);
         
     }
 
@@ -84,7 +105,11 @@ public class Stack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+       cardDatas = Resources.LoadAll<CardData>("CardData");
+    //    checkStackState();
+    //    foreach(Card card in stackedCards){
+    //     card.loadCardData();
+    //    }
     }
 
     // Update is called once per frame
