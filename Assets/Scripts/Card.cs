@@ -22,7 +22,6 @@ public class Card : MonoBehaviour
     [SerializeField] Collider2D touchedCollider;
     [SerializeField] GameObject stack_Prefabs;
 
-
     [SerializeField] int resourceNum;
 
     public Stack currentStack;
@@ -68,7 +67,7 @@ public class Card : MonoBehaviour
         AddingUpperCards();
         Transform canvas = currentStack.transform.parent;
 
-        if (this.transform == currentStack.transform.GetChild(0)){ //TODO Stack removing function
+        if (this.transform == currentStack.transform.GetChild(0)){
             foreach(Transform card in upperCards){
                 card.SetParent(canvas);
                 card.gameObject.GetComponent<Collider2D>().enabled = false;
@@ -79,7 +78,7 @@ public class Card : MonoBehaviour
         }else{
             // Debug.Log("H");
             foreach(Transform card in upperCards){
-                card.SetParent(canvas);// TODO
+                card.SetParent(canvas);
                 card.gameObject.GetComponent<Collider2D>().enabled = false;
             }
             this.gameObject.GetComponent<Collider2D>().enabled = true;
@@ -113,7 +112,7 @@ public class Card : MonoBehaviour
    /// </summary>
    private void OnMouseUp() //TODO adding animation of following
    {
-    if(touchedCollider != null){//TODO Stack adding function
+    if(touchedCollider != null){
         Instance.transform.position = getLowestPosition(TargetStack.transform) + new Vector3(0,-0.22f,0);
         Instance.transform.SetParent(touchedCollider.transform.parent);
         currentStack = TargetStack;
@@ -208,7 +207,7 @@ public class Card : MonoBehaviour
         currentStack.updateCardList();
     }
 
-    private Vector3 getLowestPosition(Transform targetStack)//TODO getLowestCardTransform
+    private Vector3 getLowestPosition(Transform targetStack)
     {
         // Debug.Log(targetStack.childCount);
         var result = targetStack.GetChild(targetStack.childCount -1 ).position;

@@ -56,16 +56,18 @@ public class Stack : MonoBehaviour
         }
     }
 
-    private bool checkCardCombine(){
+    private bool checkCardCombine(){//TODO add more check
         if(cardIds.Contains(1)){
-            return true;
+            return false;//TODO
             }
         return false;
     }
 
     public void processingStack(){//TODO all processing stack should done by this function, add task id.
         Debug.Log("ProcessingStack");
-        createCard(cardDatas[2]);
+        createCard(cardDatas[1]);
+        // stackedCards[0].cardData = cardDatas[2];
+        // stackedCards[0].loadCardData();
         updateCardList();
     }
 
@@ -79,7 +81,7 @@ public class Stack : MonoBehaviour
 
     public void createCard(CardData cardData){
         GameObject newCard = Instantiate(cardTemple, this.transform);
-        newCard.GetComponent<Card>().currentStack = this;
+        newCard.GetComponent<Card>().currentStack = this;//TODO
         newCard.GetComponent<Card>().cardData = cardData;
         newCard.GetComponent<Card>().loadCardData();
         newCard.transform.position = stackedCards[stackedCards.Count-1].transform.position + new Vector3(0,-0.22f,0);
