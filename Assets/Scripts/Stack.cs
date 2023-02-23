@@ -6,12 +6,34 @@ using UnityEngine.UI;
 
 public class Stack : MonoBehaviour
 {
+    enum TaskType{
+        Create,
+        Change,
+        Destroy,
+        Idle
+    }
+
+    private struct StackTask {
+        public TaskType taskType {get;}
+        public int  taskIndex {get;}
+        
+        public StackTask(TaskType _taskType, int  _taskIndex){
+            taskIndex = _taskIndex;
+            taskType = _taskType;
+        }
+
+    }
+
     [SerializeField] List<Card> stackedCards;
     [SerializeField] List<int> cardIds;
 
     [SerializeField] GameObject cardTemple;
+    
+    [SerializeField] StackTask currentTask;
 
     public CardData[] cardDatas;
+
+    // [SerializeField] GameManager gameManager;
     
     public void addCard(Card card)
     {
@@ -57,15 +79,33 @@ public class Stack : MonoBehaviour
     }
 
     private bool checkCardCombine(){//TODO add more check
-        if(cardIds.Contains(1)){
-            return false;//TODO
+    if(cardIds.Count > 1){
+        if(cardIds[0] == 3 && cardIds[1] == 1){
+            currentTask = new StackTask(TaskType.Create, 2);
+            return true;//TODO
             }
+    }
+        currentTask = new StackTask(TaskType.Idle,-1);
         return false;
     }
 
     public void processingStack(){//TODO all processing stack should done by this function, add task id.
         Debug.Log("ProcessingStack");
-        createCard(cardDatas[1]);
+        switch(currentTask.taskType){
+            case TaskType.Create:
+                Debug.Log("TaskType.Create");
+                createCard(cardDatas[currentTask.taskIndex]);
+                GameManager.Instance.NaturalBar.changeCurrentBarValue(1f);
+            break;
+
+            case TaskType.Change:
+                Debug.Log("TaskType.Change");
+            break;
+
+            case TaskType.Destroy:
+                Debug.Log("TaskType.Destroy");
+            break;
+        }
         // stackedCards[0].cardData = cardDatas[2];
         // stackedCards[0].loadCardData();
         updateCardList();
@@ -84,8 +124,12 @@ public class Stack : MonoBehaviour
         newCard.GetComponent<Card>().currentStack = this;//TODO
         newCard.GetComponent<Card>().cardData = cardData;
         newCard.GetComponent<Card>().loadCardData();
-        newCard.transform.position = stackedCards[stackedCards.Count-1].transform.position + new Vector3(0,-0.22f,0);
+        newCard.transform.position = getLowestPosition() + new Vector3(0,-0.22f,0);
         
+    }
+
+    private Vector3 getLowestPosition(){
+        return stackedCards[stackedCards.Count-1].transform.position;
     }
 
     public void destroyStack(){

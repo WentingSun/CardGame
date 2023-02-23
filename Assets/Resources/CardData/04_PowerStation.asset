@@ -15,5 +15,5 @@ MonoBehaviour:
   cardId: 4
   cardName: Power Station
   description: This is a Power Station
-  cardPic: {fileID: 0}
+  cardPic: {fileID: 21300000, guid: 4f5e0b732ca8b374298eef8c255ab01d, type: 3}
   resourceNum: -1
