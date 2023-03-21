@@ -31,7 +31,7 @@ public class LoadingBarControl : MonoBehaviour
 
     public void processingLoad( List<StackTask> Tasks, Action<StackTask> action){
         Enable(true);
-        var duration = Tasks[0].taskTime;
+        var duration = Tasks[0].taskValue;
         maxTime = duration;
         timeLeft = duration;
         loadingBar.maxValue = maxTime;
@@ -53,15 +53,10 @@ public class LoadingBarControl : MonoBehaviour
             timeLeft -= Time.deltaTime;
             loadingBar.value = timeLeft;
             // Debug.Log(timeLeft);
-        }else if(taskStack != null){
-            Enable(false);
-            taskStack.processingStack();
-            // taskStack.updateCardList();
         }else if(stackTasks?.Count >= 0 && TaskAction!= null){
             foreach(StackTask task in stackTasks){
                 TaskAction(task);
             }
-            TaskAction = null;
         }
     }
 }

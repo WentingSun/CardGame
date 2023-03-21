@@ -12,7 +12,7 @@ public class Stack : MonoBehaviour
     [SerializeField] List<int> cardIds;
 
     
-    [SerializeField] StackTask currentTask;
+
 
     public CardData[] cardDatas;
 
@@ -60,54 +60,40 @@ public class Stack : MonoBehaviour
     }
 
     private void updateStackState(){
+        List<StackTask> tasks = checkTheCombine();
         for(int i = 0; i < stackedCards.Count; i++){
-            if(i == 0 && checkCardCombine()){//TODO add some check, true for processing the stack.
-                // processingLoad(stackedCards[i].loadingBar,10);
-                // List<StackTask> tasks = checkTheCombine();
-                stackedCards[i].loadingBar.processingLoad(currentTask.taskTime,this);//todo action<stack task>
-                // stackedCards[i].loadingBar.processingLoad(tasks,processingStack);
-                
+            if(i == 0 && tasks.Count > 0){
+                stackedCards[i].loadingBar.processingLoad(tasks,processingStack);
             }else{
                 stackedCards[i].loadingBar.Enable(false);
             }
         }
     }
 
-    private bool checkCardCombine(){//TODO add more check
-    if(cardIds.Count > 1){
-        if(cardIds[0] == 3 && cardIds[1] == 1){
-            currentTask = new StackTask(TaskType.Create, 2,5);
-            return true;
-            }
-            else if (cardIds[0] == 4 && cardIds[1] == 1){
-            currentTask = new StackTask(TaskType.Destroy,1,5);
-            return true;
-            }//TODO
+
             
 
 
-    }
-        currentTask = new StackTask(TaskType.Idle,-1,10);
-        return false;
+    private List<StackTask> checkTheCombine(){//TODO add more combine
+        List<StackTask> result = new List<StackTask>();
+        if(cardIds.Count>1){
+            if(cardIds[0] == 3 && cardIds[1] == 1){
+                result.Add(new StackTask(TaskType.Create,2,5));
+                result.Add(new StackTask(TaskType.ChangeBarValue,0,1f));
+            }else if(cardIds[0] == 4 && cardIds[1] == 1){
+                result.Add(new StackTask(TaskType.Destroy,1,5));
+            }
+        }
+        return result;
     }
 
-    // private List<StackTask> checkTheCombine(){
-    //     List<StackTask> result = new List<StackTask>();
-    //     if(cardIds.Count>1){
-    //         if(cardIds[0] == 3 && cardIds[1] == 1){
-    //             result.Add(new StackTask(TaskType.Create,2,5));
-    //         }
-    //     }
-    //     return result;
-    // }
 
-    public void processingStack(){//TODO all processing stack should done by this function, add task id.
+    public void processingStack(StackTask stackTask){
         Debug.Log("ProcessingStack");
-        switch(currentTask.taskType){
+        switch(stackTask.taskType){
             case TaskType.Create:
                 Debug.Log("TaskType.Create");
-                createCard(cardDatas[currentTask.taskIndex]);
-                ResourceManager.Instance.changeNaturalBarValue(1f);// TODO should remove
+                createCard(cardDatas[stackTask.taskIndex]);
                 checkStackState();
             break;
 
@@ -118,43 +104,31 @@ public class Stack : MonoBehaviour
 
             case TaskType.Destroy://todo meet bug when uing checkStakeState in destory task
                 Debug.Log("TaskType.Destroy");
-                destoryCard(currentTask.taskIndex);
+                destoryCard(stackTask.taskIndex);
                 // checkStackState();
-
             break;
+
+            case TaskType.ChangeBarValue:
+                Debug.Log("TaskType.ChangeBarValue");
+                switch(stackTask.taskIndex){
+                    case 0: //NaturalBar
+                    ResourceManager.Instance.changeNaturalBarValue(stackTask.taskValue);
+                    break;
+                    case 1://HumanitiesBar
+                     ResourceManager.Instance.changeHumanitiesBarValue(stackTask.taskValue);
+                    break; 
+
+                }
+                break;
+
+            case TaskType.Idle:
+                Debug.Log("Idle");
+            break;
+            
         }
         Debug.Log("Task finished");
-        // stackedCards[0].cardData = cardDatas[2];
-        // stackedCards[0].loadCardData();
-        // updateCardList();
+
     }
-
-    // public void processingStack(StackTask stackTask){
-    //     Debug.Log("ProcessingStack");
-    //     switch(stackTask.taskType){
-    //         case TaskType.Create:
-    //             Debug.Log("TaskType.Create");
-    //             createCard(cardDatas[stackTask.taskIndex]);
-    //             ResourceManager.Instance.changeNaturalBarValue(1f);
-    //             checkStackState();
-    //         break;
-
-    //         case TaskType.Change:
-    //             Debug.Log("TaskType.Change");
-    //             checkStackState();
-    //         break;
-
-    //         case TaskType.Destroy://todo meet bug when uing checkStakeState in destory task
-    //             Debug.Log("TaskType.Destroy");
-    //             destoryCard(stackTask.taskIndex);
-    //             // checkStackState();
-
-    //         break;
-            
-    //     }
-    //     Debug.Log("Task finished");
-
-    // }
 
     private void updateCardIds(){
         cardIds.Clear();
@@ -164,7 +138,7 @@ public class Stack : MonoBehaviour
         
     }
 
-    public void createCard(CardData cardData){
+    public void createCard(CardData cardData){// TODO void createCard(CardData cardData, Stack targetStack)
         GameObject newCard = Instantiate(ResourceManager.Instance.cardTemple, this.transform);
         newCard.GetComponent<Card>().currentStack = this;
         newCard.GetComponent<Card>().cardData = cardData;
@@ -182,8 +156,9 @@ public class Stack : MonoBehaviour
         // updateCardList();
         // updateCardIds();
         // checkStackState();
+        // DO NOT USING ABOVE FUNCTION HERE!!! I dont know why, but the bug is about updating the stack attribute before card destory.
 
-        //resetStackedCardsPosition //TODO
+        //resetStackedCardsPosition() //TODO
         if(GameManager.Instance.State == GameState.PlayerTurn){
             updateStackState();
         }
@@ -201,16 +176,6 @@ public class Stack : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    // private void processingLoad(Slider loadingBar, float duration){
-    //     loadingBar.gameObject.SetActive(true);
-    //     loadingBar.maxValue = duration;
-    //     // bool result = false;
-    //     // while(loadingBar.value >0){
-    //     //     loadingBar.value -= Time.deltaTime;
-    //     // }
-    //     // result = true;
-    //     // return result;
-    // }
 
     // Start is called before the first frame update
     void Start()
