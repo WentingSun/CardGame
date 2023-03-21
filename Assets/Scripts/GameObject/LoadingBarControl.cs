@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class LoadingBarControl : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class LoadingBarControl : MonoBehaviour
     private float timeLeft;
 
     private Stack taskStack;
+
+    private List<StackTask> stackTasks;
+    private Action<StackTask> TaskAction;
 
     public void Enable(bool SetActive){
         loadingBar.gameObject.SetActive(SetActive);
@@ -23,6 +27,18 @@ public class LoadingBarControl : MonoBehaviour
         loadingBar.maxValue = maxTime;
         loadingBar.value = timeLeft;
         taskStack = stack;
+    }
+
+    public void processingLoad( List<StackTask> Tasks, Action<StackTask> action){
+        Enable(true);
+        var duration = Tasks[0].taskTime;
+        maxTime = duration;
+        timeLeft = duration;
+        loadingBar.maxValue = maxTime;
+        loadingBar.value = timeLeft;
+        stackTasks =Tasks;
+        TaskAction = action;
+
     }
 
     void Start()
@@ -41,6 +57,11 @@ public class LoadingBarControl : MonoBehaviour
             Enable(false);
             taskStack.processingStack();
             // taskStack.updateCardList();
+        }else if(stackTasks?.Count >= 0 && TaskAction!= null){
+            foreach(StackTask task in stackTasks){
+                TaskAction(task);
+            }
+            TaskAction = null;
         }
     }
 }

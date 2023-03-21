@@ -12,6 +12,7 @@ public class ResourceManager : Singleton<ResourceManager>
     public GameObject stackTemple;
 
     [SerializeField] List<Card> WholeCardsList;
+    [SerializeField] List<Stack> WholeStacksList;
 
     public CardData[] cardDatas;
     public WeatherCardData[] weatherCardDatas;
@@ -20,7 +21,17 @@ public class ResourceManager : Singleton<ResourceManager>
         base.Awake();
         cardDatas = Resources.LoadAll<CardData>("CardData");
         weatherCardDatas = Resources.LoadAll<WeatherCardData>("WeatherCardData");
+        GameManager.OnGameStateChange += ResourceManagerOnGameStateChanged;
     }
+
+    private void ResourceManagerOnGameStateChanged(GameState gameState){
+    if(gameState == GameState.PlayerTurn){
+        foreach(Card cards in WholeCardsList){
+            cards.activateMove(true);
+          }
+        }
+    }
+    
     public void changeNaturalBarValue(float changeValue){
         NaturalBar.changeCurrentBarValue(changeValue);
     }
@@ -36,7 +47,20 @@ public class ResourceManager : Singleton<ResourceManager>
         WholeCardsList.Remove(card);
     }
 
-    
+    public void addingStackList(Stack stack ){
+        WholeStacksList.Add(stack);
+    }
+
+    public void removingStackList(Stack stack){
+        WholeStacksList.Remove(stack);
+    }
+
+
+
+    override protected void OnDestroy() {
+        base.OnDestroy();
+        GameManager.OnGameStateChange -= ResourceManagerOnGameStateChanged;
+    }
 
 
 

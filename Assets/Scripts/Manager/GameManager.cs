@@ -42,7 +42,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void  HandlePlayerTurn(){
-
+    
     }
 
     private void HandleSettlement(){
@@ -63,6 +63,7 @@ public class GameManager : Singleton<GameManager>
 public enum GameState {
     Start,
     PlayerTurn,
+    Pause,
     Settlement,
     GameOver,
 

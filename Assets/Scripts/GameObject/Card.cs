@@ -28,7 +28,7 @@ public class Card : MonoBehaviour
 
     private Vector3 dragOffset;
 
-    public bool isMove = true;
+    public bool isMove = false;
 
 
     public int getCardId(){
@@ -42,7 +42,7 @@ public class Card : MonoBehaviour
     {
         // GameManager.OnGameStateChange += CardOnGameStateChanged;
         ResourceManager.Instance.addingCardList(this);
-        isMove = true;
+        
     }
 
     private void CardOnGameStateChanged(GameState gameState){
@@ -202,6 +202,7 @@ public class Card : MonoBehaviour
         
         
         
+        if(GameManager.Instance.State == GameState.PlayerTurn) isMove = true;
 
     }
 
@@ -225,6 +226,7 @@ public class Card : MonoBehaviour
         this.transform.SetParent(newStack.transform);
         currentStack = newStack.GetComponent<Stack>();
         currentStack.checkStackState();
+        ResourceManager.Instance.addingStackList(currentStack);
     }
 
     private Vector3 getLowestPosition(Transform targetStack)

@@ -6,25 +6,7 @@ using UnityEngine.UI;
 
 public class Stack : MonoBehaviour
 {
-    enum TaskType{
-        Create,
-        Change,
-        Destroy,
-        Idle
-    }
 
-    private struct StackTask {
-        public TaskType taskType {get;}
-        public int  taskIndex {get;}
-        public float taskTime {get;}
-        
-        public StackTask(TaskType _taskType, int  _taskIndex, float _taskTime){
-            taskIndex = _taskIndex;
-            taskType = _taskType;
-            taskTime = _taskTime;
-        }
-
-    }
 
     [SerializeField] List<Card> stackedCards;
     [SerializeField] List<int> cardIds;
@@ -71,13 +53,20 @@ public class Stack : MonoBehaviour
         
         updateCardList();
         updateCardIds();
-        
+        updateStackState();
 
 
+
+    }
+
+    private void updateStackState(){
         for(int i = 0; i < stackedCards.Count; i++){
             if(i == 0 && checkCardCombine()){//TODO add some check, true for processing the stack.
                 // processingLoad(stackedCards[i].loadingBar,10);
-                stackedCards[i].loadingBar.processingLoad(currentTask.taskTime,this);
+                // List<StackTask> tasks = checkTheCombine();
+                stackedCards[i].loadingBar.processingLoad(currentTask.taskTime,this);//todo action<stack task>
+                // stackedCards[i].loadingBar.processingLoad(tasks,processingStack);
+                
             }else{
                 stackedCards[i].loadingBar.Enable(false);
             }
@@ -102,13 +91,23 @@ public class Stack : MonoBehaviour
         return false;
     }
 
+    // private List<StackTask> checkTheCombine(){
+    //     List<StackTask> result = new List<StackTask>();
+    //     if(cardIds.Count>1){
+    //         if(cardIds[0] == 3 && cardIds[1] == 1){
+    //             result.Add(new StackTask(TaskType.Create,2,5));
+    //         }
+    //     }
+    //     return result;
+    // }
+
     public void processingStack(){//TODO all processing stack should done by this function, add task id.
         Debug.Log("ProcessingStack");
         switch(currentTask.taskType){
             case TaskType.Create:
                 Debug.Log("TaskType.Create");
                 createCard(cardDatas[currentTask.taskIndex]);
-                ResourceManager.Instance.changeNaturalBarValue(1f);
+                ResourceManager.Instance.changeNaturalBarValue(1f);// TODO should remove
                 checkStackState();
             break;
 
@@ -129,6 +128,33 @@ public class Stack : MonoBehaviour
         // stackedCards[0].loadCardData();
         // updateCardList();
     }
+
+    // public void processingStack(StackTask stackTask){
+    //     Debug.Log("ProcessingStack");
+    //     switch(stackTask.taskType){
+    //         case TaskType.Create:
+    //             Debug.Log("TaskType.Create");
+    //             createCard(cardDatas[stackTask.taskIndex]);
+    //             ResourceManager.Instance.changeNaturalBarValue(1f);
+    //             checkStackState();
+    //         break;
+
+    //         case TaskType.Change:
+    //             Debug.Log("TaskType.Change");
+    //             checkStackState();
+    //         break;
+
+    //         case TaskType.Destroy://todo meet bug when uing checkStakeState in destory task
+    //             Debug.Log("TaskType.Destroy");
+    //             destoryCard(stackTask.taskIndex);
+    //             // checkStackState();
+
+    //         break;
+            
+    //     }
+    //     Debug.Log("Task finished");
+
+    // }
 
     private void updateCardIds(){
         cardIds.Clear();
@@ -153,9 +179,15 @@ public class Stack : MonoBehaviour
         cardIds.RemoveAt(index);
         stackedCards.RemoveAt(index);
 
-        updateCardList();
-        updateCardIds();
+        // updateCardList();
+        // updateCardIds();
         // checkStackState();
+
+        //resetStackedCardsPosition //TODO
+        if(GameManager.Instance.State == GameState.PlayerTurn){
+            updateStackState();
+        }
+        
         
         
     }
@@ -194,5 +226,9 @@ public class Stack : MonoBehaviour
     void Update()
     {
         // updateCardList();
+    }
+    
+    private void OnDestroy() {
+        ResourceManager.Instance.removingStackList(this);
     }
 }

@@ -5,18 +5,18 @@ using UnityEngine;
 public class MeanManager : Singleton<MeanManager>
 {
 
-    override protected void Awake() {
+    protected override void Awake() {
         base.Awake();
-        GameManager.OnGameStateChange += GameManagerOnGameStateChanged;
+        GameManager.OnGameStateChange += MeanManagerOnGameStateChanged;
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        GameManager.OnGameStateChange -= GameManagerOnGameStateChanged;
+        GameManager.OnGameStateChange -= MeanManagerOnGameStateChanged;
     }
 
-    void GameManagerOnGameStateChanged(GameState newState){
+    void MeanManagerOnGameStateChanged(GameState newState){
 
     }
 
