@@ -16,10 +16,12 @@ public class Stack : MonoBehaviour
     private struct StackTask {
         public TaskType taskType {get;}
         public int  taskIndex {get;}
+        public float taskTime {get;}
         
-        public StackTask(TaskType _taskType, int  _taskIndex){
+        public StackTask(TaskType _taskType, int  _taskIndex, float _taskTime){
             taskIndex = _taskIndex;
             taskType = _taskType;
+            taskTime = _taskTime;
         }
 
     }
@@ -27,7 +29,6 @@ public class Stack : MonoBehaviour
     [SerializeField] List<Card> stackedCards;
     [SerializeField] List<int> cardIds;
 
-    [SerializeField] GameObject cardTemple;
     
     [SerializeField] StackTask currentTask;
 
@@ -47,10 +48,10 @@ public class Stack : MonoBehaviour
 
     public void updateCardList(){
         stackedCards.Clear();
+
         for(int i =0 ; i < this.transform.childCount ; i++){
             stackedCards.Add(transform.GetChild(i).GetComponent<Card>());
         }
-        checkStackState();
     }
 
     public void disableCollider(){
@@ -66,12 +67,17 @@ public class Stack : MonoBehaviour
         }
     }
 
-    private void checkStackState(){
+    public void checkStackState(){
+        
+        updateCardList();
         updateCardIds();
+        
+
+
         for(int i = 0; i < stackedCards.Count; i++){
             if(i == 0 && checkCardCombine()){//TODO add some check, true for processing the stack.
                 // processingLoad(stackedCards[i].loadingBar,10);
-                stackedCards[i].loadingBar.processingLoad(10,this);
+                stackedCards[i].loadingBar.processingLoad(currentTask.taskTime,this);
             }else{
                 stackedCards[i].loadingBar.Enable(false);
             }
@@ -81,11 +87,18 @@ public class Stack : MonoBehaviour
     private bool checkCardCombine(){//TODO add more check
     if(cardIds.Count > 1){
         if(cardIds[0] == 3 && cardIds[1] == 1){
-            currentTask = new StackTask(TaskType.Create, 2);
-            return true;//TODO
+            currentTask = new StackTask(TaskType.Create, 2,5);
+            return true;
             }
+            else if (cardIds[0] == 4 && cardIds[1] == 1){
+            currentTask = new StackTask(TaskType.Destroy,1,5);
+            return true;
+            }//TODO
+            
+
+
     }
-        currentTask = new StackTask(TaskType.Idle,-1);
+        currentTask = new StackTask(TaskType.Idle,-1,10);
         return false;
     }
 
@@ -95,20 +108,26 @@ public class Stack : MonoBehaviour
             case TaskType.Create:
                 Debug.Log("TaskType.Create");
                 createCard(cardDatas[currentTask.taskIndex]);
-                GameManager.Instance.NaturalBar.changeCurrentBarValue(1f);
+                ResourceManager.Instance.changeNaturalBarValue(1f);
+                checkStackState();
             break;
 
             case TaskType.Change:
                 Debug.Log("TaskType.Change");
+                checkStackState();
             break;
 
-            case TaskType.Destroy:
+            case TaskType.Destroy://todo meet bug when uing checkStakeState in destory task
                 Debug.Log("TaskType.Destroy");
+                destoryCard(currentTask.taskIndex);
+                // checkStackState();
+
             break;
         }
+        Debug.Log("Task finished");
         // stackedCards[0].cardData = cardDatas[2];
         // stackedCards[0].loadCardData();
-        updateCardList();
+        // updateCardList();
     }
 
     private void updateCardIds(){
@@ -120,11 +139,24 @@ public class Stack : MonoBehaviour
     }
 
     public void createCard(CardData cardData){
-        GameObject newCard = Instantiate(cardTemple, this.transform);
-        newCard.GetComponent<Card>().currentStack = this;//TODO
+        GameObject newCard = Instantiate(ResourceManager.Instance.cardTemple, this.transform);
+        newCard.GetComponent<Card>().currentStack = this;
         newCard.GetComponent<Card>().cardData = cardData;
         newCard.GetComponent<Card>().loadCardData();
         newCard.transform.position = getLowestPosition() + new Vector3(0,-0.22f,0);
+        
+    }
+
+    public void destoryCard(int index){
+        var theCard = stackedCards[index].gameObject;
+        Destroy(theCard);
+        cardIds.RemoveAt(index);
+        stackedCards.RemoveAt(index);
+
+        updateCardList();
+        updateCardIds();
+        // checkStackState();
+        
         
     }
 
@@ -151,7 +183,7 @@ public class Stack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       cardDatas = Resources.LoadAll<CardData>("CardData");
+       cardDatas = ResourceManager.Instance.cardDatas;
     //    checkStackState();
     //    foreach(Card card in stackedCards){
     //     card.loadCardData();

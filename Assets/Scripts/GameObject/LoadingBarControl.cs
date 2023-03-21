@@ -40,6 +40,7 @@ public class LoadingBarControl : MonoBehaviour
         }else if(taskStack != null){
             Enable(false);
             taskStack.processingStack();
+            // taskStack.updateCardList();
         }
     }
 }

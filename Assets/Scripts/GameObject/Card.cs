@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour
 {
 
-    public Card Instance;
     [SerializeField] int cardId;
     public LoadingBarControl loadingBar;
     public TextMeshProUGUI nameText;
@@ -20,7 +19,7 @@ public class Card : MonoBehaviour
     [SerializeField] Transform parentDuringMove;
     [SerializeField] Stack TargetStack;
     [SerializeField] Collider2D touchedCollider;
-    [SerializeField] GameObject stack_Prefabs;
+
 
     [SerializeField] int resourceNum;
 
@@ -28,6 +27,9 @@ public class Card : MonoBehaviour
     [SerializeField] List<Transform> upperCards;
 
     private Vector3 dragOffset;
+
+    public bool isMove = true;
+
 
     public int getCardId(){
         return this.cardId;
@@ -38,7 +40,17 @@ public class Card : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        Instance = this;
+        // GameManager.OnGameStateChange += CardOnGameStateChanged;
+        ResourceManager.Instance.addingCardList(this);
+        isMove = true;
+    }
+
+    private void CardOnGameStateChanged(GameState gameState){
+        isMove = (gameState == GameState.PlayerTurn);
+    }
+
+    public void activateMove(bool activity){
+        isMove = activity;
     }
 
     private void getLoadingBar(){
@@ -61,30 +73,34 @@ public class Card : MonoBehaviour
     /// </summary>
     private void OnMouseDown()
     {
-        dragOffset = this.transform.position - getMousePosition();
-        Stack stack = currentStack;
+        if (isMove){
+            dragOffset = this.transform.position - getMousePosition();
+            Stack stack = currentStack;
 
-        AddingUpperCards();
-        Transform canvas = currentStack.transform.parent;
+            AddingUpperCards();
+            Transform canvas = currentStack.transform.parent;
 
-        if (this.transform == currentStack.transform.GetChild(0)){
-            foreach(Transform card in upperCards){
-                card.SetParent(canvas);
-                card.gameObject.GetComponent<Collider2D>().enabled = false;
-            }
+            if (this.transform == currentStack.transform.GetChild(0)){
+                foreach(Transform card in upperCards){
+                    card.SetParent(canvas);
+                    card.gameObject.GetComponent<Collider2D>().enabled = false;
+                }
+                    this.gameObject.GetComponent<Collider2D>().enabled = true;
+                // Debug.Log("D");
+                currentStack.destroyStack();
+            }else{
+                // Debug.Log("H");
+                foreach(Transform card in upperCards){
+                    card.SetParent(canvas);
+                    card.gameObject.GetComponent<Collider2D>().enabled = false;
+                }
                 this.gameObject.GetComponent<Collider2D>().enabled = true;
-            // Debug.Log("D");
-            currentStack.destroyStack();
-        }else{
-            // Debug.Log("H");
-            foreach(Transform card in upperCards){
-                card.SetParent(canvas);
-                card.gameObject.GetComponent<Collider2D>().enabled = false;
             }
-            this.gameObject.GetComponent<Collider2D>().enabled = true;
+            stack.checkStackState();
+            stack.enableCollider();
+        }else{
+            Debug.Log("You cant move this card now");
         }
-        stack.updateCardList();
-        stack.enableCollider();
 
 
 
@@ -94,15 +110,17 @@ public class Card : MonoBehaviour
     
     private void OnMouseDrag()
    {
-    if(upperCards != null){
-    upperCards[0].position = getMousePosition() + dragOffset;
+    if(isMove){
+        if(upperCards != null){
+        upperCards[0].position = getMousePosition() + dragOffset;
 
-        for(int i = 1; i < upperCards.Count; i++){
-            upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f,0);
+            for(int i = 1; i < upperCards.Count; i++){
+                upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f,0);
+            }
+        
+        }else{
+        transform.position = getMousePosition() + dragOffset;
         }
-    
-    }else{
-    transform.position = getMousePosition() + dragOffset;
     }
    }
    
@@ -112,29 +130,31 @@ public class Card : MonoBehaviour
    /// </summary>
    private void OnMouseUp() //TODO adding animation of following
    {
-    if(touchedCollider != null){
-        Instance.transform.position = getLowestPosition(TargetStack.transform) + new Vector3(0,-0.22f,0);
-        Instance.transform.SetParent(touchedCollider.transform.parent);
-        currentStack = TargetStack;
-    }else {
-        // Debug.Log("Should create a stack");
-        createStack();
+    if(isMove){
+        if(touchedCollider != null){
+            this.transform.position = getLowestPosition(TargetStack.transform) + new Vector3(0,-0.22f,0);
+            this.transform.SetParent(touchedCollider.transform.parent);
+            currentStack = TargetStack;
+        }else {
+            // Debug.Log("Should create a stack");
+            createStack();
+        }
+        for(int i = 1; i< upperCards.Count; i++){
+            // upperCards[i].gameObject.GetComponent<Collider2D>().enabled = true;
+            upperCards[i].SetParent(currentStack.transform);
+            upperCards[i].GetComponent<Card>().currentStack =currentStack;
+            upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f,0);
+        }
+        // foreach(Transform card in upperCards){
+        //     card.gameObject.GetComponent<Collider2D>().enabled = true;
+        //     card.SetParent(currentStack.transform);
+        //     card.GetComponent<Card>().currentStack =currentStack;
+        // }
+        currentStack.checkStackState();
+        currentStack.enableCollider();
+        upperCards = null;
+        }
     }
-    for(int i = 1; i< upperCards.Count; i++){
-        // upperCards[i].gameObject.GetComponent<Collider2D>().enabled = true;
-        upperCards[i].SetParent(currentStack.transform);
-        upperCards[i].GetComponent<Card>().currentStack =currentStack;
-        upperCards[i].position = upperCards[i-1].position + new Vector3(0,-0.22f,0);
-    }
-    // foreach(Transform card in upperCards){
-    //     card.gameObject.GetComponent<Collider2D>().enabled = true;
-    //     card.SetParent(currentStack.transform);
-    //     card.GetComponent<Card>().currentStack =currentStack;
-    // }
-    currentStack.updateCardList();
-    currentStack.enableCollider();
-    upperCards = null;
-   }
 
    Vector3 getMousePosition()
    {
@@ -201,10 +221,10 @@ public class Card : MonoBehaviour
     
 
     private void createStack(){
-        GameObject newStack = Instantiate(stack_Prefabs,this.transform.parent);
+        GameObject newStack = Instantiate(ResourceManager.Instance.stackTemple,this.transform.parent);
         this.transform.SetParent(newStack.transform);
         currentStack = newStack.GetComponent<Stack>();
-        currentStack.updateCardList();
+        currentStack.checkStackState();
     }
 
     private Vector3 getLowestPosition(Transform targetStack)
@@ -217,6 +237,11 @@ public class Card : MonoBehaviour
     public void followAnimation(Transform target, Transform follower){
         
 
+    }
+
+    public void OnDestroy(){
+        // GameManager.OnGameStateChange -= CardOnGameStateChanged;
+        ResourceManager.Instance.removingCardList(this);
     }
 
 
