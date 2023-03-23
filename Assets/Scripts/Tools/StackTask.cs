@@ -4,6 +4,8 @@ public enum TaskType{
     Change,
     Destroy,
     ChangeBarValue,
+    ChangeCardValue,
+    ChangePlayBuff,
     Idle
 }
 

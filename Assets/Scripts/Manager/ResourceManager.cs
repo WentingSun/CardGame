@@ -14,13 +14,20 @@ public class ResourceManager : Singleton<ResourceManager>
     [SerializeField] List<Card> WholeCardsList;
     [SerializeField] List<Stack> WholeStacksList;
 
+
+    
+
     public CardData[] cardDatas;
     public WeatherCardData[] weatherCardDatas;
+    public Sprite[] cardPic;
+    public Sprite[] weatherCardPic;
 
     override protected void Awake() {
         base.Awake();
         cardDatas = Resources.LoadAll<CardData>("CardData");
         weatherCardDatas = Resources.LoadAll<WeatherCardData>("WeatherCardData");
+        cardPic = Resources.LoadAll<Sprite>("Image/CardPic");
+        weatherCardPic = Resources.LoadAll<Sprite>("Image/WeatherCardPic");
         GameManager.OnGameStateChange += ResourceManagerOnGameStateChanged;
     }
 

@@ -11,6 +11,8 @@ public class LoadingBarControl : MonoBehaviour
     public float maxTime;
     private float timeLeft;
 
+    public bool isProcessing;
+
     private Stack taskStack;
 
     private List<StackTask> stackTasks;
@@ -30,7 +32,9 @@ public class LoadingBarControl : MonoBehaviour
     }
 
     public void processingLoad( List<StackTask> Tasks, Action<StackTask> action){
-        Enable(true);
+        if(Tasks[0].taskValue>0){
+            Enable(true);
+        }
         var duration = Tasks[0].taskValue;
         maxTime = duration;
         timeLeft = duration;
@@ -50,13 +54,17 @@ public class LoadingBarControl : MonoBehaviour
     void Update()
     {
         if(timeLeft > 0){
-            timeLeft -= Time.deltaTime;
+            isProcessing = true;
+            if(GameManager.Instance.State == GameState.PlayerTurn){
+                timeLeft -= Time.deltaTime;
+            }
             loadingBar.value = timeLeft;
             // Debug.Log(timeLeft);
         }else if(stackTasks?.Count >= 0 && TaskAction!= null){
             foreach(StackTask task in stackTasks){
                 TaskAction(task);
             }
+            isProcessing = false;
         }
     }
 }

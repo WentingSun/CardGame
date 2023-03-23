@@ -131,7 +131,7 @@ public class Card : MonoBehaviour
    private void OnMouseUp() //TODO adding animation of following
    {
     if(isMove){
-        if(touchedCollider != null){
+        if(touchedCollider != null && touchedCollider.GetComponent<Card>() ){
             this.transform.position = getLowestPosition(TargetStack.transform) + new Vector3(0,-0.22f,0);
             this.transform.SetParent(touchedCollider.transform.parent);
             currentStack = TargetStack;

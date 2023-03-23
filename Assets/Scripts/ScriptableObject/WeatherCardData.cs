@@ -11,6 +11,8 @@ public class WeatherCardData : ScriptableObject
     public string description;
     public Sprite cardPic;
 
+    public WeatherState weatherState;
+
     
 
 }

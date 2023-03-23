@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class NormalBarControl : MonoBehaviour
 {
+
+    public string barName;
     public Slider Bar;
     public float maxValue;
     [SerializeField] float currentValue;
@@ -16,6 +18,15 @@ public class NormalBarControl : MonoBehaviour
     public void changeCurrentBarValue(float changeValue){
         currentValue += changeValue;
         Bar.value = currentValue;
+        checkBarState();
+    }
+
+    private void Awake() {
+        barName = this.gameObject.name;
+    }
+
+    private void checkBarState(){
+
     }
 
     // Start is called before the first frame update

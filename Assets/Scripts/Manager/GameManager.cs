@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     
 
     public GameState State;
+    public WeatherState currentWeatherState;
 
     public static event Action<GameState> OnGameStateChange;
     

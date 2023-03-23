@@ -11,10 +11,9 @@ public class Stack : MonoBehaviour
     [SerializeField] List<Card> stackedCards;
     [SerializeField] List<int> cardIds;
 
-    
-
-
     public CardData[] cardDatas;
+
+    public Stack targetStack;
 
     // [SerializeField] GameManager gameManager;
     
@@ -75,14 +74,35 @@ public class Stack : MonoBehaviour
 
 
     private List<StackTask> checkTheCombine(){//TODO add more combine
+        Debug.Log("checkTheCombine()");
         List<StackTask> result = new List<StackTask>();
         if(cardIds.Count>1){
             if(cardIds[0] == 3 && cardIds[1] == 1){
                 result.Add(new StackTask(TaskType.Create,2,5));
                 result.Add(new StackTask(TaskType.ChangeBarValue,0,1f));
-            }else if(cardIds[0] == 4 && cardIds[1] == 1){
+            }else if(cardIds[0] == 4 && cardIds[1] == 1){// TODO testing CODE, you should change it in future
                 result.Add(new StackTask(TaskType.Destroy,1,5));
             }
+        }else if(cardIds.Count == 1){
+            if(cardIds[0] == 6){
+                result.Add(new StackTask(TaskType.Create,5,getSolarPlaneTaskTime()));
+            }
+        }
+        return result;
+    }
+
+    private int getSolarPlaneTaskTime(){
+        int result = 20;
+        switch(GameManager.Instance.currentWeatherState){
+            case WeatherState.Sunny:
+            result = 10;
+            break;
+            case WeatherState.Rainy:
+            result = -1;
+            break;
+            default:
+            result = 20;
+            break;
         }
         return result;
     }
@@ -169,6 +189,13 @@ public class Stack : MonoBehaviour
 
     private Vector3 getLowestPosition(){
         return stackedCards[stackedCards.Count-1].transform.position;
+    }
+
+    private void createEmptyStack(){
+        GameObject newStack = Instantiate(ResourceManager.Instance.stackTemple,this.transform.parent);
+        newStack.transform.position = new Vector3(0,0,0);
+        //newStack.transform.position = getRandomNearByPositionOf(this.transform)
+        this.targetStack = newStack.GetComponent<Stack>();
     }
 
     public void destroyStack(){
