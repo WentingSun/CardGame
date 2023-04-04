@@ -106,6 +106,10 @@ public class ResourceManager : Singleton<ResourceManager>
         }
     }
 
+    public void resetTurnBar(float turnScale){
+        TurnBar.setTheTurnTime(turnScale);
+    }
+
     
     
     public void changeNaturalBarValue(float changeValue){

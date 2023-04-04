@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
 
     public GameState State;
     public WeatherState currentWeatherState;
+    public float turnScale = 60;
 
     public static event Action<GameState> OnGameStateChange;
     
@@ -39,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void HandleStart(){
+        resetTurnBar();
         Debug.Log("Start");
     }
 
@@ -51,6 +53,7 @@ public class GameManager : Singleton<GameManager>
         if(checkCountinue()){
             Debug.Log("Continue");
             ResourceManager.Instance.consumeElectricity(ResourceManager.Instance.getElectricityCardRequire());
+            InformationManager.Instance.updateSmartMeterInfo();
             UpdateGameState(GameState.Start);
         }else{
             UpdateGameState(GameState.GameOver);
@@ -66,6 +69,10 @@ public class GameManager : Singleton<GameManager>
             return false;
         }
         return true;
+    }
+
+    private void resetTurnBar(){
+        ResourceManager.Instance.resetTurnBar(turnScale);
     }
 
 
