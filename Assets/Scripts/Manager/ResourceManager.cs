@@ -14,6 +14,8 @@ public class ResourceManager : Singleton<ResourceManager>
     [SerializeField] List<Card> WholeCardsList;
     [SerializeField] List<Stack> WholeStacksList;
 
+    private int rewardResisdentCapacity = 0;
+
 
     
 
@@ -33,11 +35,62 @@ public class ResourceManager : Singleton<ResourceManager>
 
     private void ResourceManagerOnGameStateChanged(GameState gameState){
     if(gameState == GameState.PlayerTurn){
-        foreach(Card cards in WholeCardsList){
-            cards.activateMove(true);
-          }
+        setAllCardActivity(true);
+        }else{
+        setAllCardActivity(false);
         }
     }
+
+    private void setAllCardActivity(bool isActivity){
+        foreach(Card cards in WholeCardsList){
+            cards.activateMove(isActivity);
+          }
+    }
+
+    public int getElectricityCardNum(){
+        int result = 0;
+        foreach(Card cards in WholeCardsList){
+            if(cards.cardData.cardId == 5){
+                result ++;
+            }
+          }
+        return result;
+    }
+
+    public int getElectricityCardRequire(){//todo
+        int result =0 ;
+        foreach(Card cards in WholeCardsList){
+            if(cards.cardData.cardId == 8){
+                result += 4;
+            }
+        }
+        return result;
+    }
+
+    public int getTargetCardsNum(int TargetCardDataId){
+        int result = 0;
+        foreach(Card cards in WholeCardsList){
+            if(cards.cardData.cardId == TargetCardDataId){
+                result ++;
+            }
+        }
+
+        return result;
+    }
+
+    public int getResidentCapacityNum(){
+        int result = rewardResisdentCapacity;
+        result += getTargetCardsNum(8)*3;
+        return result;
+    }
+
+    public int getRewardResisdentCapacity(){
+        return this.rewardResisdentCapacity;
+    }
+
+
+
+    
     
     public void changeNaturalBarValue(float changeValue){
         NaturalBar.changeCurrentBarValue(changeValue);

@@ -64,6 +64,7 @@ public class GameManager : Singleton<GameManager>
 public enum GameState {
     Start,
     PlayerTurn,
+    Market,
     Pause,
     Settlement,
     GameOver,

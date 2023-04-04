@@ -74,7 +74,7 @@ public class Stack : MonoBehaviour
 
 
     private List<StackTask> checkTheCombine(){//TODO add more combine
-        Debug.Log("checkTheCombine()");
+        // Debug.Log("checkTheCombine()");
         List<StackTask> result = new List<StackTask>();
         if(cardIds.Count>1){
             if(cardIds[0] == 3 && cardIds[1] == 1){
@@ -98,7 +98,7 @@ public class Stack : MonoBehaviour
             result = 10;
             break;
             case WeatherState.Rainy:
-            result = -1;
+            result = -1; // -1 means not enable the loading bar
             break;
             default:
             result = 20;
@@ -146,6 +146,8 @@ public class Stack : MonoBehaviour
             break;
             
         }
+        InformationManager.Instance.updateSmartMeterInfo();
+
         Debug.Log("Task finished");
 
     }
@@ -178,13 +180,21 @@ public class Stack : MonoBehaviour
         // checkStackState();
         // DO NOT USING ABOVE FUNCTION HERE!!! I dont know why, but the bug is about updating the stack attribute before card destory.
 
-        //resetStackedCardsPosition() //TODO
+        resetStackedCardsPosition(); //TODO
         if(GameManager.Instance.State == GameState.PlayerTurn){
             updateStackState();
         }
         
         
         
+    }
+
+    private void resetStackedCardsPosition(){
+        Vector3 initPosition = stackedCards[0].transform.position;
+        Vector3 offsets =new Vector3(0,-0.22f,0);
+        for(int i = 0 ; i<stackedCards.Count ; i++){
+            stackedCards[i].transform.position = initPosition + offsets * i;
+        }
     }
 
     private Vector3 getLowestPosition(){
