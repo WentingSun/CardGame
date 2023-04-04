@@ -61,9 +61,10 @@ public class InformationManager : Singleton<InformationManager>
         }
     }
 
-    public void showInInformationBox(string contents){
+    public void showInInformationBox(string contents, bool auto = false){
         InformationBox.SetActive(true);
         InformationBoxText.text = contents;
+        InformationBoxText.enableAutoSizing = auto;
         isShowing = true;
     }
 

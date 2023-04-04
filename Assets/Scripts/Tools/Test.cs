@@ -27,9 +27,4 @@ public class Test : MonoBehaviour
             break;
         }
     }
-
-    private void OnMouseOver() {
-        Debug.Log("OnMouseOver()");
-        // image.sprite = ResourceManager.Instance.weatherCardPic[3];
-    }
 }
