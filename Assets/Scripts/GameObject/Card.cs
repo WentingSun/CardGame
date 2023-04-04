@@ -250,6 +250,15 @@ public class Card : MonoBehaviour
 
     }
 
+    public void consumeThisCard(){
+        if(this.transform == currentStack.transform.GetChild(0)){
+            currentStack.destroyStack();
+        }else{
+            Destroy(this.gameObject);
+        }
+        
+    }
+
     public void OnDestroy(){
         // GameManager.OnGameStateChange -= CardOnGameStateChanged;
         ResourceManager.Instance.removingCardList(this);

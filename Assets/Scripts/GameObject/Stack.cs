@@ -53,6 +53,7 @@ public class Stack : MonoBehaviour
         updateCardList();
         updateCardIds();
         updateStackState();
+        resetStackedCardsPosition();
 
 
 
@@ -179,22 +180,31 @@ public class Stack : MonoBehaviour
         // updateCardIds();
         // checkStackState();
         // DO NOT USING ABOVE FUNCTION HERE!!! I dont know why, but the bug is about updating the stack attribute before card destory.
-
-        resetStackedCardsPosition(); //TODO
-        if(GameManager.Instance.State == GameState.PlayerTurn){
+        if(cardIds.Count == 0 ) {
+            Destroy(this.gameObject);
+        }else{
+            resetStackedCardsPosition(); //TODO
+            if(GameManager.Instance.State == GameState.PlayerTurn){
             updateStackState();
+            }
         }
+
+        
+       
         
         
         
     }
 
     private void resetStackedCardsPosition(){
-        Vector3 initPosition = stackedCards[0].transform.position;
-        Vector3 offsets =new Vector3(0,-0.22f,0);
-        for(int i = 0 ; i<stackedCards.Count ; i++){
-            stackedCards[i].transform.position = initPosition + offsets * i;
+        if(stackedCards.Count >0){
+            Vector3 initPosition = stackedCards[0].transform.position;
+            Vector3 offsets =new Vector3(0,-0.22f,0);
+            for(int i = 0 ; i<stackedCards.Count ; i++){
+                stackedCards[i].transform.position = initPosition + offsets * i;
+            }
         }
+        
     }
 
     private Vector3 getLowestPosition(){

@@ -39,7 +39,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void HandleStart(){
-
+        Debug.Log("Start");
     }
 
     private void  HandlePlayerTurn(){
@@ -47,11 +47,25 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void HandleSettlement(){
-
+        Debug.Log("Settlement");
+        if(checkCountinue()){
+            Debug.Log("Continue");
+            ResourceManager.Instance.consumeElectricity(ResourceManager.Instance.getElectricityCardRequire());
+            UpdateGameState(GameState.Start);
+        }else{
+            UpdateGameState(GameState.GameOver);
+        }
     }
 
     private void HandleGamerOver(){
+        Debug.Log("game over");
+    }
 
+    private bool checkCountinue(){
+        if(ResourceManager.Instance.getElectricityCardNum() < ResourceManager.Instance.getElectricityCardRequire()){
+            return false;
+        }
+        return true;
     }
 
 

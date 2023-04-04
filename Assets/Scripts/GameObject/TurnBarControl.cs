@@ -34,7 +34,10 @@ public class TurnBarControl : MonoBehaviour
             TurnBar.value = timeLeft;
             // Debug.Log(timeLeft);
         }else{
-            GameManager.Instance.UpdateGameState(GameState.Settlement);
+            if(GameManager.Instance.State == GameState.PlayerTurn){
+                GameManager.Instance.UpdateGameState(GameState.Settlement);
+            }
+            
         }
     }
 

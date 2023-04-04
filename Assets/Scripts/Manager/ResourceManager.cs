@@ -6,6 +6,7 @@ public class ResourceManager : Singleton<ResourceManager>
 {
     [SerializeField] NormalBarControl NaturalBar;
     [SerializeField] NormalBarControl HumanitiesBar;
+    [SerializeField] TurnBarControl TurnBar;
 
     public GameObject cardTemple;
 
@@ -52,7 +53,7 @@ public class ResourceManager : Singleton<ResourceManager>
         foreach(Card cards in WholeCardsList){
             if(cards.cardData.cardId == 5){
                 result ++;
-            }
+            }//todo else if(cards.cardData.cardId == ){result += cards.resuorceNum}
           }
         return result;
     }
@@ -88,7 +89,22 @@ public class ResourceManager : Singleton<ResourceManager>
         return this.rewardResisdentCapacity;
     }
 
+    public void consumeElectricity(int num){
+        for(int i =0 ; i <WholeCardsList.Count; i++){
+            if(WholeCardsList[i].cardData.cardId == 5 && num > 0){
+                WholeCardsList[i].consumeThisCard();
+                num --;
+            }
+        }
+    }
 
+    public void consumeAllElectricity(){
+        foreach(Card cards in WholeCardsList){
+            if (cards.cardData.cardId == 4){
+                cards.consumeThisCard();
+            }
+        }
+    }
 
     
     
