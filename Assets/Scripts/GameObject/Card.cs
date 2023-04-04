@@ -187,9 +187,18 @@ public class Card : MonoBehaviour
    }
 
    private void OnMouseOver(){
-    // string text = this.transform.gameObject.name;
-    // Debug.Log(text);
+   
+   InformationManager.Instance.showInInformationBox(this.cardData.description);
    }
+
+   void OnMouseEnter() {
+   }
+
+   void onMouseExit(){
+    Debug.Log("Exit");
+   }
+
+
 
     // Start is called before the first frame update
     void Start()

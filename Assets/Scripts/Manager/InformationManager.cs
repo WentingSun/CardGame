@@ -9,8 +9,18 @@ public class InformationManager : Singleton<InformationManager>
     public TextMeshProUGUI ElectricityRequireInfo;
     public TextMeshProUGUI ResidentNumInfo;
     public TextMeshProUGUI ResidentCapacityInfo;
+    private TextMeshProUGUI InformationBoxText;
+    private GameObject InformationBox;
 
+    private bool isShowing = false;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        InformationBox = GameObject.Find("Information box");
+        InformationBoxText = InformationBox.GetComponentInChildren<TextMeshProUGUI>();
+        InformationBox.SetActive(false);
+    }
 
     private void Start() {
         updateSmartMeterInfo();
@@ -41,6 +51,24 @@ public class InformationManager : Singleton<InformationManager>
         setElectricityRequireInfo();
         setResidentNumInfo();
         setResidentCapacityInfo();
+    }
+
+    private void Update() {
+        if(isShowing){
+            isShowing = false;
+        }else{
+            dismissInformationBox();
+        }
+    }
+
+    public void showInInformationBox(string contents){
+        InformationBox.SetActive(true);
+        InformationBoxText.text = contents;
+        isShowing = true;
+    }
+
+    public void dismissInformationBox(){
+        InformationBox.SetActive(false);
     }
 
 }

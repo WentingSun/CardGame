@@ -6,7 +6,7 @@ using System;
 
 public class LoadingBarControl : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     public Slider loadingBar;
     public float maxTime;
     private float timeLeft;
@@ -22,7 +22,7 @@ public class LoadingBarControl : MonoBehaviour
         loadingBar.gameObject.SetActive(SetActive);
     }
 
-    public void processingLoad(float duration, Stack stack){//TODO 
+    public void processingLoad(float duration, Stack stack){
         Enable(true);
         maxTime = duration;
         timeLeft = duration;
@@ -59,7 +59,6 @@ public class LoadingBarControl : MonoBehaviour
                 timeLeft -= Time.deltaTime;
             }
             loadingBar.value = timeLeft;
-            // Debug.Log(timeLeft);
         }else if(stackTasks?.Count >= 0 && TaskAction!= null){
             foreach(StackTask task in stackTasks){
                 TaskAction(task);
