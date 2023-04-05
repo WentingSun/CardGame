@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5c66c8a44ba5e842b118fd0b1bb8ec7, type: 3}
-  m_Name: 02_Rainy
+  m_Script: {fileID: 11500000, guid: 2c8255cab7847704a9d778f1a065562d, type: 3}
+  m_Name: 14_Climate Summit
   m_EditorClassIdentifier: 
-  cardId: 2
-  cardName: Rainy
-  description: This is rainny day
-  cardPic: {fileID: 21300000, guid: 5daaba92fae87e64cb623b720beb7809, type: 3}
-  weatherState: 1
+  cardId: 14
+  cardName: Climate Summit
+  description: This card represent Climate Summit
+  cardPic: {fileID: 21300000, guid: ff2176795a59e194792d607ce259aff0, type: 3}
+  resourceNum: 0

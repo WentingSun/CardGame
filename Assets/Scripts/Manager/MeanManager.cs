@@ -5,6 +5,10 @@ using UnityEngine;
 public class MeanManager : Singleton<MeanManager>
 {
 
+    public void activiteMenu(){
+        
+    }
+
     protected override void Awake() {
         base.Awake();
         GameManager.OnGameStateChange += MeanManagerOnGameStateChanged;

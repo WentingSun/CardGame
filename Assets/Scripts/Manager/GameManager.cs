@@ -40,9 +40,18 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void HandleStart(){
+        // ResourceManager.Instance.resetAllStackPos();
+        // InformationManager.Instance.updateSmartMeterInfo();
         resetTurnBar();
+        consumeElectricityInStorage();//todo
+        supplyTheProduct();//todo
+        resetTheMarket();//todo
+        playerDrawTheCurrentWeather();//todo
+        
         Debug.Log("Start");
     }
+
+
 
     private void  HandlePlayerTurn(){
     
@@ -52,13 +61,15 @@ public class GameManager : Singleton<GameManager>
         Debug.Log("Settlement");
         if(checkCountinue()){
             Debug.Log("Continue");
-            ResourceManager.Instance.consumeElectricity(ResourceManager.Instance.getElectricityCardRequire());
-            InformationManager.Instance.updateSmartMeterInfo();
+            consumeElectricityAtSettlement();
+            consumeLifeSpanOfSomeCard();//todo
             UpdateGameState(GameState.Start);
         }else{
             UpdateGameState(GameState.GameOver);
         }
     }
+
+
 
     private void HandleGamerOver(){
         Debug.Log("game over");
@@ -73,6 +84,37 @@ public class GameManager : Singleton<GameManager>
 
     private void resetTurnBar(){
         ResourceManager.Instance.resetTurnBar(turnScale);
+    }
+
+    private void consumeElectricityAtSettlement(){
+        ResourceManager.Instance.consumeElectricity(ResourceManager.Instance.getElectricityCardRequire());
+        // InformationManager.Instance.updateSmartMeterInfo();
+    }
+
+    private void consumeLifeSpanOfSomeCard(){
+        
+    }
+
+    private void consumeElectricityInStorage()
+    {
+        
+    }
+
+    private void resetTheMarket(){
+
+    }
+
+    private void supplyTheProduct(){
+
+    }
+
+    private void playerDrawTheCurrentWeather(){
+        MeanManager.Instance.activiteMenu();
+        
+    }
+
+    private void initTurn(){
+
     }
 
 

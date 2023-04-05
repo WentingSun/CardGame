@@ -47,6 +47,12 @@ public class ResourceManager : Singleton<ResourceManager>
             cards.activateMove(isActivity);
           }
     }
+    
+    public void resetAllStackPos(){
+        foreach(Stack stacks in WholeStacksList){
+            stacks.resetStackedCardsPosition();
+        }
+    }
 
     public int getElectricityCardNum(){
         int result = 0;
@@ -97,6 +103,7 @@ public class ResourceManager : Singleton<ResourceManager>
             }
         }
     }
+
 
     public void consumeAllElectricity(){
         foreach(Card cards in WholeCardsList){

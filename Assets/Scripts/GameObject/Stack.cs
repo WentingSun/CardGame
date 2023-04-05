@@ -196,12 +196,14 @@ public class Stack : MonoBehaviour
         
     }
 
-    private void resetStackedCardsPosition(){
-        if(stackedCards.Count >0){
+    public void resetStackedCardsPosition(){
+        if(stackedCards.Count >0 && stackedCards[0] != null ){
             Vector3 initPosition = stackedCards[0].transform.position;
             Vector3 offsets =new Vector3(0,-0.22f,0);
             for(int i = 0 ; i<stackedCards.Count ; i++){
-                stackedCards[i].transform.position = initPosition + offsets * i;
+                if(stackedCards[i]!=null){
+                    stackedCards[i].transform.position = initPosition + offsets * i;
+                }
             }
         }
         
