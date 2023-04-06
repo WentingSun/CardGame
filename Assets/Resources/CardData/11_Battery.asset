@@ -17,3 +17,4 @@ MonoBehaviour:
   description: This is battery
   cardPic: {fileID: 21300000, guid: 080e7a1d747e47541892d6b8dc7a2395, type: 3}
   resourceNum: 0
+  basicPrice: 5

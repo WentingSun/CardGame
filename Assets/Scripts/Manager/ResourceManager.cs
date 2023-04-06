@@ -28,6 +28,7 @@ public class ResourceManager : Singleton<ResourceManager>
     public Dictionary<WeatherState,WeatherCardData>  weatherDictionary;
     public Sprite[] cardPic;
     public Sprite[] weatherCardPic;
+    public List<CardData> productList;
 
     override protected void Awake() {
         base.Awake();
@@ -38,6 +39,14 @@ public class ResourceManager : Singleton<ResourceManager>
         GameManager.OnGameStateChange += ResourceManagerOnGameStateChanged;
         weatherDictionary = weatherCardDatas.ToDictionary(x => x.weatherState, x =>x);
         WeatherCardDeck.AddRange(WeatherStateConstants.SpringWeatherStates);
+        canvasTransform = GameObject.Find("Canvas").transform;
+        productList = cardDatas.ToList().FindAll(x => x.basicPrice >= 0);
+    }
+
+    public void loadGameResource(){
+        NaturalBar = GameObject.Find("NatureBar").GetComponent<NormalBarControl>();
+        HumanitiesBar = GameObject.Find("HumanitiesBar").GetComponent<NormalBarControl>();
+        TurnBar = GameObject.Find("TurnBar").GetComponent<TurnBarControl>();
         canvasTransform = GameObject.Find("Canvas").transform;
     }
 
@@ -52,6 +61,7 @@ public class ResourceManager : Singleton<ResourceManager>
     private void setAllCardActivity(bool isActivity){
         foreach(Card cards in WholeCardsList){
             cards.activateMove(isActivity);
+            cards.activateItCollider(isActivity);
           }
     }
     
@@ -63,10 +73,12 @@ public class ResourceManager : Singleton<ResourceManager>
 
     public int getElectricityCardNum(){
         int result = 0;
-        foreach(Card cards in WholeCardsList){
-            if(cards.cardData.cardId == 5){
-                result ++;
-            }//todo else if(cards.cardData.cardId == ){result += cards.resuorceNum}
+        if(WholeCardsList != null){
+            foreach(Card cards in WholeCardsList){
+                if(cards.cardData != null && cards.cardData.cardId == 5){
+                    result ++;
+                }//todo else if(cards.cardData.cardId == ){result += cards.resuorceNum}
+            }
           }
         return result;
     }
@@ -74,7 +86,7 @@ public class ResourceManager : Singleton<ResourceManager>
     public int getElectricityCardRequire(){//todo
         int result =0 ;
         foreach(Card cards in WholeCardsList){
-            if(cards.cardData.cardId == 8){
+            if(cards.cardData != null && cards.cardData.cardId == 8){
                 result += 4;
             }
         }
@@ -84,7 +96,7 @@ public class ResourceManager : Singleton<ResourceManager>
     public int getTargetCardsNum(int TargetCardDataId){
         int result = 0;
         foreach(Card cards in WholeCardsList){
-            if(cards.cardData.cardId == TargetCardDataId){
+            if(cards.cardData != null && cards.cardData.cardId == TargetCardDataId){
                 result ++;
             }
         }

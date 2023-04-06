@@ -12,4 +12,6 @@ public class CardData : ScriptableObject
     public Sprite cardPic;
     public int resourceNum;
 
+    public int basicPrice;
+
 }

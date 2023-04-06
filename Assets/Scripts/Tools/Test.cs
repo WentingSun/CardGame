@@ -10,6 +10,10 @@ public class Test : MonoBehaviour
     private void Awake() {
         image = GetComponentInChildren<Image>();
     }
+    
+    public void testButton(){
+        Debug.Log("testButton()");
+    }
 
     // private void Update() {
     //     switch(GameManager.Instance.currentWeatherState){

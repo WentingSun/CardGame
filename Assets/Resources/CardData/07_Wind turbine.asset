@@ -17,3 +17,4 @@ MonoBehaviour:
   description: This is Wind turbine
   cardPic: {fileID: 0}
   resourceNum: 10
+  basicPrice: 5

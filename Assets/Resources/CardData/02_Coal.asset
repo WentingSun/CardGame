@@ -17,3 +17,4 @@ MonoBehaviour:
   description: Hi, This is Coal
   cardPic: {fileID: 21300000, guid: 313d0b96762d96446bd182da8609b5cf, type: 3}
   resourceNum: 1
+  basicPrice: 1

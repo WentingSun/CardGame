@@ -17,3 +17,4 @@ MonoBehaviour:
   description: The basic resource for morden society
   cardPic: {fileID: 21300000, guid: 18b6bb1b657f73242a52b55a4e07454b, type: 3}
   resourceNum: 0
+  basicPrice: -1

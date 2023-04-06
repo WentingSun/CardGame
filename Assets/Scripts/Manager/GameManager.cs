@@ -58,7 +58,7 @@ public class GameManager : Singleton<GameManager>
         consumeElectricityInStorage();//todo
         supplyTheProduct();//todo
         resetTheMarket();//todo
-        playerDrawTheCurrentWeather();//todo
+        playerGrabTheCurrentWeather();//todo
         
         Debug.Log("Start");
     }
@@ -122,8 +122,8 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    private void playerDrawTheCurrentWeather(){
-        // MenuManager.Instance.activiteMenu();
+    private void playerGrabTheCurrentWeather(){
+        MenuManager.Instance.activiteWeatherMenu();
         
     }
 

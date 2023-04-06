@@ -17,3 +17,4 @@ MonoBehaviour:
   description: This is Pumped-storage Hydroelectricity
   cardPic: {fileID: 21300000, guid: 5567dc0f3ea3e9f49a9411dda1ff9a5a, type: 3}
   resourceNum: 0
+  basicPrice: 5

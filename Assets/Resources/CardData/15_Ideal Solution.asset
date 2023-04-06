@@ -17,3 +17,4 @@ MonoBehaviour:
   description: This card can solve the weather problem.
   cardPic: {fileID: 0}
   resourceNum: 0
+  basicPrice: -1

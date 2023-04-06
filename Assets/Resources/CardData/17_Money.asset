@@ -17,3 +17,4 @@ MonoBehaviour:
   description: The card repersent currency.
   cardPic: {fileID: 21300000, guid: 0b0a58eb89881544b9e3ace1e01acc5d, type: 3}
   resourceNum: 1
+  basicPrice: -1

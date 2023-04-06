@@ -17,3 +17,4 @@ MonoBehaviour:
   description: This card represent the factory
   cardPic: {fileID: 21300000, guid: cd2b020d50e37cd469cfc3a8a57c775c, type: 3}
   resourceNum: 0
+  basicPrice: 10

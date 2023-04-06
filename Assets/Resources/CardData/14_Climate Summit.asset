@@ -17,3 +17,4 @@ MonoBehaviour:
   description: This card represent Climate Summit
   cardPic: {fileID: 21300000, guid: ff2176795a59e194792d607ce259aff0, type: 3}
   resourceNum: 0
+  basicPrice: -1

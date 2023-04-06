@@ -11,15 +11,23 @@ public class InformationManager : Singleton<InformationManager>
     public TextMeshProUGUI ResidentCapacityInfo;
     private TextMeshProUGUI InformationBoxText;
     private GameObject InformationBox;
+    private bool inforBoxActivity = false;
 
     private bool isShowing = false;
 
     protected override void Awake()
     {
         base.Awake();
+        GameManager.OnGameStateChange += informationManagerOnGameStateChange;
         InformationBox = GameObject.Find("Information box");
         InformationBoxText = InformationBox.GetComponentInChildren<TextMeshProUGUI>();
         InformationBox.SetActive(false);
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        GameManager.OnGameStateChange -= informationManagerOnGameStateChange;
     }
 
     private void Start() {
@@ -62,10 +70,21 @@ public class InformationManager : Singleton<InformationManager>
     }
 
     public void showInInformationBox(string contents, bool auto = false){
-        InformationBox.SetActive(true);
-        InformationBoxText.text = contents;
-        InformationBoxText.enableAutoSizing = auto;
-        isShowing = true;
+        if(inforBoxActivity){
+            InformationBox.SetActive(true);
+            InformationBoxText.text = contents;
+            InformationBoxText.enableAutoSizing = auto;
+            isShowing = true;
+        }
+        
+    }
+
+    private void informationManagerOnGameStateChange(GameState gameState){
+        if(gameState == GameState.Market){
+            inforBoxActivity =false;
+        }else{
+            inforBoxActivity =true;
+        }
     }
 
     public void dismissInformationBox(){

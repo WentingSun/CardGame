@@ -17,3 +17,4 @@ MonoBehaviour:
   description: 
   cardPic: {fileID: 0}
   resourceNum: 0
+  basicPrice: -1

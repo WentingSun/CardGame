@@ -30,6 +30,8 @@ public class Card : MonoBehaviour
 
     public bool isMove = false;
 
+    public bool isInStore;
+
 
     public int getCardId(){
         return this.cardId;
@@ -41,7 +43,10 @@ public class Card : MonoBehaviour
     private void Awake()
     {
         // GameManager.OnGameStateChange += CardOnGameStateChanged;
-        ResourceManager.Instance.addingCardList(this);
+        if(!isInStore){
+            ResourceManager.Instance.addingCardList(this);
+        }
+        
         
     }
 
@@ -51,6 +56,11 @@ public class Card : MonoBehaviour
 
     public void activateMove(bool activity){
         isMove = activity;
+    }
+
+    public void activateItCollider(bool activity){
+        Debug.Log(activity);
+        this.gameObject.GetComponent<BoxCollider2D>().enabled = activity;
     }
 
     private void getLoadingBar(){
@@ -194,8 +204,7 @@ public class Card : MonoBehaviour
    }
 
    private void OnMouseOver(){
-   
-   InformationManager.Instance.showInInformationBox(this.cardData.description);
+            InformationManager.Instance.showInInformationBox(this.cardData.description);    
    }
 
    void OnMouseEnter() {
@@ -212,7 +221,7 @@ public class Card : MonoBehaviour
     {
         // getLoadingBar();
         loadCardData();
-        if (currentStack == null){
+        if (currentStack == null && GameManager.Instance.State == GameState.PlayerTurn){
             createStack();      
         }
         
@@ -228,6 +237,14 @@ public class Card : MonoBehaviour
             nameText.text = cardData.cardName;
             cardId = cardData.cardId;
         }
+    }
+
+    public void loadCardDataInthisCard(CardData _cardData){
+        Debug.Log("loadCardDataInthisCard(CardData _cardData)");
+        cardImage.sprite = _cardData.cardPic;
+        nameText.text = _cardData.cardName;
+        cardId = _cardData.cardId;
+        cardData = _cardData;
     }
 
     // Update is called once per frame
@@ -267,8 +284,10 @@ public class Card : MonoBehaviour
 
     public void OnDestroy(){
         // GameManager.OnGameStateChange -= CardOnGameStateChanged;
-        ResourceManager.Instance.removingCardList(this);
-        InformationManager.Instance.updateSmartMeterInfo();
+        if(!isInStore){
+            ResourceManager.Instance.removingCardList(this);
+            InformationManager.Instance.updateSmartMeterInfo();
+        }
     }
 
 

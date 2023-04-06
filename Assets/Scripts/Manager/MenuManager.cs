@@ -1,15 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class MenuManager : Singleton<MenuManager>
 {
 
     public GameObject WeatherMenu;
+    public GameObject MarketMenu;
+
+    public void loadMenu(){
+        // Debug.Log("Loadmenu");
+        WeatherMenu = GameObject.Find("WeatherMenu");
+
+    }
 
     public void activiteWeatherMenu(){
+        WeatherMenu.SetActive(true);
+        WeatherMenu.transform.SetSiblingIndex(ResourceManager.Instance.canvasTransform.childCount + 1);
+    }
 
+    public void activiteMarketMenu(){
+        MarketMenu.SetActive(true);
+        MarketMenu.transform.SetSiblingIndex(ResourceManager.Instance.canvasTransform.childCount + 1);
     }
 
     protected override void Awake() {

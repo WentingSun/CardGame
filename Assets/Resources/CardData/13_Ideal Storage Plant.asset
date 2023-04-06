@@ -17,3 +17,4 @@ MonoBehaviour:
   description: This is ideal storage plant
   cardPic: {fileID: 21300000, guid: c4ac85aa7ebc69848b26a6c197dbe77b, type: 3}
   resourceNum: 0
+  basicPrice: 10

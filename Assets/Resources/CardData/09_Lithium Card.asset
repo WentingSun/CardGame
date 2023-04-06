@@ -17,3 +17,4 @@ MonoBehaviour:
   description: This is Lithium.
   cardPic: {fileID: 21300000, guid: 5a820169e6cc271438e02ef6b42bdb9e, type: 3}
   resourceNum: 1
+  basicPrice: 1
