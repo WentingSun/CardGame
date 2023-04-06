@@ -3,25 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class MeanManager : Singleton<MeanManager>
+public class MenuManager : Singleton<MenuManager>
 {
 
-    public void activiteMenu(){
+    public GameObject WeatherMenu;
+
+    public void activiteWeatherMenu(){
 
     }
 
     protected override void Awake() {
         base.Awake();
-        GameManager.OnGameStateChange += MeanManagerOnGameStateChanged;
+        GameManager.OnGameStateChange += MenuManagerOnGameStateChanged;
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        GameManager.OnGameStateChange -= MeanManagerOnGameStateChanged;
+        GameManager.OnGameStateChange -= MenuManagerOnGameStateChanged;
     }
 
-    void MeanManagerOnGameStateChanged(GameState newState){
+    void MenuManagerOnGameStateChanged(GameState newState){
 
     }
 

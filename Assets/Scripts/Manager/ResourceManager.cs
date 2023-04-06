@@ -22,7 +22,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
 
     
-
+    public Transform canvasTransform;
     public CardData[] cardDatas;
     public WeatherCardData[] weatherCardDatas;
     public Dictionary<WeatherState,WeatherCardData>  weatherDictionary;
@@ -38,6 +38,7 @@ public class ResourceManager : Singleton<ResourceManager>
         GameManager.OnGameStateChange += ResourceManagerOnGameStateChanged;
         weatherDictionary = weatherCardDatas.ToDictionary(x => x.weatherState, x =>x);
         WeatherCardDeck.AddRange(WeatherStateConstants.SpringWeatherStates);
+        canvasTransform = GameObject.Find("Canvas").transform;
     }
 
     private void ResourceManagerOnGameStateChanged(GameState gameState){

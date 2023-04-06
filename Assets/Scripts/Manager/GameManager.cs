@@ -32,6 +32,9 @@ public class GameManager : Singleton<GameManager>
             case GameState.GameOver:
             HandleGamerOver();
             break;
+            case GameState.Market:
+            HandleMarKet();
+            break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState , null);
 
@@ -78,7 +81,9 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    private void  HandleMarKet(){
 
+    }
 
     private void HandleGamerOver(){
         Debug.Log("game over");
@@ -118,7 +123,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void playerDrawTheCurrentWeather(){
-        MeanManager.Instance.activiteMenu();
+        // MenuManager.Instance.activiteMenu();
         
     }
 

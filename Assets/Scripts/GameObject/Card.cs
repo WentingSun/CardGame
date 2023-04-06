@@ -78,7 +78,7 @@ public class Card : MonoBehaviour
             Stack stack = currentStack;
 
             AddingUpperCards();
-            Transform canvas = currentStack.transform.parent;
+            Transform canvas = ResourceManager.Instance.canvasTransform;
 
             if (this.transform == currentStack.transform.GetChild(0)){
                 foreach(Transform card in upperCards){
@@ -104,6 +104,13 @@ public class Card : MonoBehaviour
 
 
 
+    }
+
+    public static void createCard(CardData cardData, Transform targetPlace){
+        GameObject newCard = Instantiate(ResourceManager.Instance.cardTemple, targetPlace);
+        newCard.GetComponent<Card>().cardData = cardData;
+        newCard.GetComponent<Card>().loadCardData();
+        newCard.transform.position = targetPlace.position;
     }
 
     
