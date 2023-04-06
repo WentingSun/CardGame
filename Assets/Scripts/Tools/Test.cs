@@ -11,20 +11,20 @@ public class Test : MonoBehaviour
         image = GetComponentInChildren<Image>();
     }
 
-    private void Update() {
-        switch(GameManager.Instance.currentWeatherState){
-            case WeatherState.Sunny:
-            image.sprite = ResourceManager.Instance.weatherCardPic[1];
-            break;
-            case WeatherState.Windy:
-            image.sprite = ResourceManager.Instance.weatherCardPic[3];
-            break;
-            case WeatherState.Rainy:
-            image.sprite = ResourceManager.Instance.weatherCardPic[2];
-            break;
-            case WeatherState.AirPollution:
-            image.sprite = ResourceManager.Instance.weatherCardPic[4];
-            break;
-        }
-    }
+    // private void Update() {
+    //     switch(GameManager.Instance.currentWeatherState){
+    //         case WeatherState.Sunny:
+    //         image.sprite = ResourceManager.Instance.weatherCardPic[1];
+    //         break;
+    //         case WeatherState.Windy:
+    //         image.sprite = ResourceManager.Instance.weatherCardPic[3];
+    //         break;
+    //         case WeatherState.Rainy:
+    //         image.sprite = ResourceManager.Instance.weatherCardPic[2];
+    //         break;
+    //         case WeatherState.AirPollution:
+    //         image.sprite = ResourceManager.Instance.weatherCardPic[4];
+    //         break;
+    //     }
+    // }
 }

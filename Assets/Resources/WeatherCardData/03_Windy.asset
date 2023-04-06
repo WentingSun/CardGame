@@ -16,4 +16,4 @@ MonoBehaviour:
   cardName: Windy
   description: This is windy day.
   cardPic: {fileID: 21300000, guid: 43ec4dfbce95db2489952dbdf61eb3dc, type: 3}
-  weatherState: 2
+  weatherState: 3

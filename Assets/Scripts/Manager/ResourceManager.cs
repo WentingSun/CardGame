@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ResourceManager : Singleton<ResourceManager>
 {
@@ -14,6 +15,8 @@ public class ResourceManager : Singleton<ResourceManager>
 
     [SerializeField] List<Card> WholeCardsList;
     [SerializeField] List<Stack> WholeStacksList;
+    public List<WeatherState> WeatherCardDeck;
+    
 
     private int rewardResisdentCapacity = 0;
 
@@ -22,6 +25,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
     public CardData[] cardDatas;
     public WeatherCardData[] weatherCardDatas;
+    public Dictionary<WeatherState,WeatherCardData>  weatherDictionary;
     public Sprite[] cardPic;
     public Sprite[] weatherCardPic;
 
@@ -32,6 +36,8 @@ public class ResourceManager : Singleton<ResourceManager>
         cardPic = Resources.LoadAll<Sprite>("Image/CardPic");
         weatherCardPic = Resources.LoadAll<Sprite>("Image/WeatherCardPic");
         GameManager.OnGameStateChange += ResourceManagerOnGameStateChanged;
+        weatherDictionary = weatherCardDatas.ToDictionary(x => x.weatherState, x =>x);
+        WeatherCardDeck.AddRange(WeatherStateConstants.SpringWeatherStates);
     }
 
     private void ResourceManagerOnGameStateChanged(GameState gameState){
@@ -153,3 +159,4 @@ public class ResourceManager : Singleton<ResourceManager>
 
 
 }
+

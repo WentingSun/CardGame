@@ -11,8 +11,10 @@ public class GameManager : Singleton<GameManager>
     public GameState State;
     public WeatherState currentWeatherState;
     public float turnScale = 60;
+    private int consecutiveTurn;
 
     public static event Action<GameState> OnGameStateChange;
+    public static event Action<WeatherState> onWeatherStateChange;
     
     public void UpdateGameState(GameState newState){
         State = newState;
@@ -37,6 +39,13 @@ public class GameManager : Singleton<GameManager>
 
         OnGameStateChange?.Invoke(State);
 
+    }
+
+    public void UpdateWeatherState(WeatherState newWeatherState){
+        currentWeatherState = newWeatherState;
+
+
+        onWeatherStateChange?.Invoke(currentWeatherState);
     }
 
     private void HandleStart(){

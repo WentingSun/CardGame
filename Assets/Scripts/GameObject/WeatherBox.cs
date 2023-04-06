@@ -10,32 +10,68 @@ public class WeatherBox : MonoBehaviour
 
     private void Awake() {
         image = GetComponentInChildren<Image>();
+        GameManager.onWeatherStateChange += updateBoxPic;
+    }
+
+    private void updateBoxPic(WeatherState currentWeather){
+        image.sprite = ResourceManager.Instance.weatherDictionary[currentWeather].cardPic;
     }
 
     private string getCurrentWeatherDescription(){
         string result = "";
-        switch(GameManager.Instance.currentWeatherState){
-            case WeatherState.Sunny:
-            result += ResourceManager.Instance.weatherCardDatas[1].description;
-            break;
-            case WeatherState.Rainy:
-            result += ResourceManager.Instance.weatherCardDatas[2].description;
-            break;
-            case WeatherState.Windy:
-            result += ResourceManager.Instance.weatherCardDatas[3].description;
-            break;
-            case WeatherState.AirPollution:
-            result += ResourceManager.Instance.weatherCardDatas[4].description;
-            break;
-            
-        }
+        result += ResourceManager.Instance.weatherDictionary[GameManager.Instance.currentWeatherState].description;
+        return result;
+    }
+
+    private string getCurrentWeatherDeckState(){
+        List<WeatherState> weatherDeck = ResourceManager.Instance.WeatherCardDeck;
+        int num;
+        string result = "\n\n The weather deck contains ";
+        if(weatherDeck.Contains(WeatherState.Sunny)) {
+            num = weatherDeck.FindAll(x => x.Equals(WeatherState.Sunny)).Count;
+            result += $"Sunny card * {num}, ";
+            }
+        if(weatherDeck.Contains(WeatherState.Rainy)) {
+            num = weatherDeck.FindAll(x => x.Equals(WeatherState.Rainy)).Count;
+            result += $"Rain card * {num}, ";
+            }
+        if(weatherDeck.Contains(WeatherState.Windy)) {
+            num = weatherDeck.FindAll(x => x.Equals(WeatherState.Windy)).Count;
+            result += $"Windy card * {num}, ";
+            }    
+        if(weatherDeck.Contains(WeatherState.AirPollution)) {
+            num = weatherDeck.FindAll(x => x.Equals(WeatherState.AirPollution)).Count;
+            result += $"AirPollution card * {num}, ";
+            }
+        if(weatherDeck.Contains(WeatherState.UrbanHeatIsland)) {
+            num = weatherDeck.FindAll(x => x.Equals(WeatherState.UrbanHeatIsland)).Count;
+            result += $"UrbanHeatIsland card * {num}, ";
+            }
+        if(weatherDeck.Contains(WeatherState.Rainstorms)) {
+            num = weatherDeck.FindAll(x => x.Equals(WeatherState.Rainstorms)).Count;
+            result += $"Rainstorms card * {num}, ";
+            }
+        if(weatherDeck.Contains(WeatherState.Snow)) {
+            num = weatherDeck.FindAll(x => x.Equals(WeatherState.Snow)).Count;
+            result += $"Snow card * {num}, ";
+            }
+        
+        result += "Good luck!";
+        
+        
+
         return result;
     }
 
 
 
     private void OnMouseOver() {
-        string message = BasicDescription + getCurrentWeatherDescription();
+        string message = BasicDescription + getCurrentWeatherDescription() + getCurrentWeatherDeckState();
         InformationManager.Instance.showInInformationBox(message,true);
     }
+
+    private void OnDestroy() {
+        GameManager.onWeatherStateChange -= updateBoxPic;
+    }
+
 }
