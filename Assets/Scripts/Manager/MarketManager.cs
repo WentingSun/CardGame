@@ -5,10 +5,12 @@ using UnityEngine;
 public class MarketManager : Singleton<MarketManager>
 {
     public GameObject testObj;
+    public List<CardData> purchasedCards;
 
     protected override void Awake() {
         base.Awake();
         GameManager.OnGameStateChange += MarketManagerOnGameStateChange;
+        purchasedCards.Clear();
     }
 
     protected override void OnDestroy()
@@ -27,6 +29,11 @@ public class MarketManager : Singleton<MarketManager>
             GameManager.Instance.UpdateGameState(GameState.Market);
         }
         
+    }
+
+    public void purchasingTheCard(CardData cardData, int price){
+        purchasedCards.Add(cardData);
+        ResourceManager.Instance.consumeMoney(price);
     }
 
     public void MarketManagerOnGameStateChange(GameState gameState){

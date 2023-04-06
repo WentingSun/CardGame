@@ -12,11 +12,15 @@ public class MarketSlot : MonoBehaviour
     public bool isSold = false;
 
     public TextMeshProUGUI priceText;
+    private string notaionContents;
+
+    public GameObject SoldoutPic;
 
     private void Awake() {
         Product = GetComponentInChildren<Card>();
         Product.activateItCollider(false);
         priceText = transform.Find("Price").GetComponent<TextMeshProUGUI>();
+        SoldoutPic = transform.Find("SoldoutPic").gameObject;
         // resetTheProduct();
         // resetThePrice();
         
@@ -27,10 +31,30 @@ public class MarketSlot : MonoBehaviour
         resetThePrice();
     }
 
-    public void purchaseTheCard(){
+    public void purchaseTheCard(){ 
+        notaionContents = "You Can't Buy It Now.";
+        if(checkedMoneyState()){
+            if(!isSold){
+                isSold = true;
+                SoldoutPic.SetActive(true);
+                MarketManager.Instance.purchasingTheCard(Product.cardData,price);
+                //todo
+            }else{
+                notaionContents += "\n It Is Sold Out!";
+                InformationManager.Instance.setMarketNotationInfo(notaionContents);
+            }
+        }else{
+            InformationManager.Instance.setMarketNotationInfo(notaionContents);
+        }
+        
 
-        isSold = true;
+    }
 
+    private bool checkedMoneyState(){
+        if(ResourceManager.Instance.getTargetCardsNum(17) >= price){
+            return true;
+        }
+        return false;
     }
 
     public void resetTheProduct(){

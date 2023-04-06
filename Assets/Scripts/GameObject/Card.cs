@@ -117,10 +117,21 @@ public class Card : MonoBehaviour
     }
 
     public static void createCard(CardData cardData, Transform targetPlace){
-        GameObject newCard = Instantiate(ResourceManager.Instance.cardTemple, targetPlace);
-        newCard.GetComponent<Card>().cardData = cardData;
-        newCard.GetComponent<Card>().loadCardData();
+        GameObject newCardObj = Instantiate(ResourceManager.Instance.cardTemple, targetPlace);
+        Card newCard = newCardObj.GetComponent<Card>();
+        newCard.cardData = cardData;
+        newCard.loadCardData();
         newCard.transform.position = targetPlace.position;
+        
+        if(targetPlace.childCount == 1){
+            newCard.createStack();
+        }else{
+            Stack targetStack = targetPlace.GetComponentInChildren<Card>().currentStack;
+            newCard.currentStack = targetStack;
+            newCard.transform.SetParent(targetStack.transform);
+            newCard.transform.position = targetPlace.position + (targetStack.transform.childCount -1)* new Vector3(0,-0.22f,0);
+        }
+        
     }
 
     
@@ -204,7 +215,7 @@ public class Card : MonoBehaviour
    }
 
    private void OnMouseOver(){
-            InformationManager.Instance.showInInformationBox(this.cardData.description);    
+     InformationManager.Instance.showInInformationBox(this.cardData.description);    
    }
 
    void OnMouseEnter() {
@@ -286,7 +297,6 @@ public class Card : MonoBehaviour
         // GameManager.OnGameStateChange -= CardOnGameStateChanged;
         if(!isInStore){
             ResourceManager.Instance.removingCardList(this);
-            InformationManager.Instance.updateSmartMeterInfo();
         }
     }
 

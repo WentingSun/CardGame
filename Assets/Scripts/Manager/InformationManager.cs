@@ -9,8 +9,15 @@ public class InformationManager : Singleton<InformationManager>
     public TextMeshProUGUI ElectricityRequireInfo;
     public TextMeshProUGUI ResidentNumInfo;
     public TextMeshProUGUI ResidentCapacityInfo;
+    public TextMeshProUGUI MarketNotationInfo;
+
+
     private TextMeshProUGUI InformationBoxText;
     private GameObject InformationBox;
+
+    
+
+
     private bool inforBoxActivity = false;
 
     private bool isShowing = false;
@@ -53,6 +60,11 @@ public class InformationManager : Singleton<InformationManager>
         int currentResidentCapacity = ResourceManager.Instance.getResidentCapacityNum();
         ResidentCapacityInfo.text = currentResidentCapacity.ToString();
     }
+
+    public void setMarketNotationInfo(string contents){
+        MarketNotationInfo.text = contents;
+    }
+
 
     public void updateSmartMeterInfo(){
         setCurrentRlectricityInfo();

@@ -123,6 +123,15 @@ public class ResourceManager : Singleton<ResourceManager>
         }
     }
 
+    public void consumeMoney(int num){
+        for(int i =0 ; i <WholeCardsList.Count; i++){
+             if(WholeCardsList[i].cardData.cardId == 17 && num > 0){
+                WholeCardsList[i].consumeThisCard();
+                num --;
+            }
+        }
+    }
+
 
     public void consumeAllElectricity(){
         foreach(Card cards in WholeCardsList){
@@ -147,18 +156,22 @@ public class ResourceManager : Singleton<ResourceManager>
 
     public void addingCardList(Card card){
         WholeCardsList.Add(card);
+        InformationManager.Instance.updateSmartMeterInfo();
     }
 
     public void removingCardList(Card card){
         WholeCardsList.Remove(card);
+        InformationManager.Instance.updateSmartMeterInfo();
     }
 
     public void addingStackList(Stack stack ){
         WholeStacksList.Add(stack);
+        InformationManager.Instance.updateSmartMeterInfo();
     }
 
     public void removingStackList(Stack stack){
         WholeStacksList.Remove(stack);
+        InformationManager.Instance.updateSmartMeterInfo();
     }
 
 
