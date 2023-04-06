@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class MarketMenuButtonControl : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public List<MarketSlot> marketSlots;
+
     public void ExitButton(){
-        
+        MenuManager.Instance.activiteMarketMenu(false);
+        GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }
 }

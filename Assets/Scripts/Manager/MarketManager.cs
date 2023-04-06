@@ -27,6 +27,7 @@ public class MarketManager : Singleton<MarketManager>
     public void MarketButton(){
         if(GameManager.Instance.State == GameState.PlayerTurn){
             GameManager.Instance.UpdateGameState(GameState.Market);
+            MenuManager.Instance.activiteMarketMenu(true);
         }
         
     }

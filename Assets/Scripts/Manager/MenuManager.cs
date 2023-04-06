@@ -12,23 +12,32 @@ public class MenuManager : Singleton<MenuManager>
 
     public void loadMenu(){
         // Debug.Log("Loadmenu");
-        WeatherMenu = GameObject.Find("WeatherMenu");
+        WeatherMenu = ResourceManager.Instance.canvasTransform.Find("WeatherMenu").gameObject;
+        MarketMenu = ResourceManager.Instance.canvasTransform.Find("MarketMenu").gameObject;
 
     }
 
-    public void activiteWeatherMenu(){
-        WeatherMenu.SetActive(true);
+    public void activiteWeatherMenu(bool active){
+        WeatherMenu.SetActive(active);
         WeatherMenu.transform.SetSiblingIndex(ResourceManager.Instance.canvasTransform.childCount + 1);
     }
 
-    public void activiteMarketMenu(){
-        MarketMenu.SetActive(true);
+    public void activiteMarketMenu(bool active){
+        MarketMenu.SetActive(active);
         MarketMenu.transform.SetSiblingIndex(ResourceManager.Instance.canvasTransform.childCount + 1);
     }
 
     protected override void Awake() {
         base.Awake();
         GameManager.OnGameStateChange += MenuManagerOnGameStateChanged;
+        
+    }
+
+    private void Update() {
+        if(WeatherMenu == null 
+        || MarketMenu == null){
+            loadMenu();
+        }
     }
 
     protected override void OnDestroy()

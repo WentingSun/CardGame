@@ -123,7 +123,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void playerGrabTheCurrentWeather(){
-        MenuManager.Instance.activiteWeatherMenu();
+        MenuManager.Instance.activiteWeatherMenu(true);
         
     }
 
