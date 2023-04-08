@@ -124,6 +124,7 @@ public class ResourceManager : Singleton<ResourceManager>
     }
 
     public void consumeMoney(int num){
+        if(num < 0) return ;
         for(int i =0 ; i <WholeCardsList.Count; i++){
              if(WholeCardsList[i].cardData.cardId == 17 && num > 0){
                 WholeCardsList[i].consumeThisCard();

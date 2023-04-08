@@ -10,6 +10,11 @@ public class MarketManager : Singleton<MarketManager>
     public int bufferMoney = 0;
     public int bufferElectricity = 0;
 
+    private int sellPrice = 1;//the price for selling electricity
+    private int buyPrice = 2;// the price for buying electircity
+    private int sellNum = 1;// the electricity num for selling
+    private int buyNum = 1;// the electricity num for buying
+
     protected override void Awake() {
         base.Awake();
         bufferMoney = 2;
@@ -46,6 +51,45 @@ public class MarketManager : Singleton<MarketManager>
             return true;
         }
         return false;
+    }
+
+    public bool checkedElectricityState(int price){
+        if(ResourceManager.Instance.getTargetCardsNum(5) + bufferElectricity  >= price){
+            return true;
+        }
+        return false;
+    }
+
+    public void buyMarketElectricity(){
+        if(checkedMoneyState(buyPrice)){
+            int remainMoney = bufferMoney - buyPrice;
+            if(remainMoney > 0){
+                bufferMoney = remainMoney;
+            }else{
+                bufferMoney = 0;
+            }
+            ResourceManager.Instance.consumeMoney(-remainMoney);
+            bufferElectricity += buyNum;
+            InformationManager.Instance.updateMarketInfoBoxText();
+        }else{
+            InformationManager.Instance.setMarketNotationInfo("You Do Not Have Enough Money To Buy Electricity.");
+        }
+    }
+
+    public void sellMarketElectricity(){
+        if(checkedElectricityState(sellNum)){
+            int remainElectriciy = bufferElectricity - sellNum;
+            if(remainElectriciy > 0){
+                bufferElectricity = remainElectriciy;
+            }else{
+                bufferElectricity = 0;
+            }
+            ResourceManager.Instance.consumeMoney(-remainElectriciy);
+            bufferMoney += sellPrice;
+            InformationManager.Instance.updateMarketInfoBoxText();
+        }else{
+            InformationManager.Instance.setMarketNotationInfo("You Do Not Have Enough Electricity To Sell.");
+        }
     }
 
     public void purchasingTheCard(CardData cardData, int price){

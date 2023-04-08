@@ -72,6 +72,11 @@ public class InformationManager : Singleton<InformationManager>
         MarketInfoBox.transform.Find("ElectricityNum").GetComponent<TextMeshProUGUI>().text = electricityNum;
     }
 
+    public void updateMarketInfoBoxText(){
+        setMarketInfoBoxText(MarketManager.Instance.getCurrentMoneyNum().ToString(),
+                             MarketManager.Instance.getCurrentElectricity().ToString());
+    }
+
 
     public void updateSmartMeterInfo(){
         setCurrentRlectricityInfo();

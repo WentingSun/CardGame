@@ -13,15 +13,22 @@ public class MarketMenuButtonControl : MonoBehaviour
     }
 
     public void MarketButton(){
-        if(GameManager.Instance.State == GameState.PlayerTurn){
+        if(GameManager.Instance.State == GameState.PlayerTurn || GameManager.Instance.State == GameState.Pause){
             GameManager.Instance.UpdateGameState(GameState.Market);
             MenuManager.Instance.activiteMarketMenu(true);
-            InformationManager.Instance.setMarketInfoBoxText(MarketManager.Instance.getCurrentMoneyNum().ToString(),
-                                                             MarketManager.Instance.getCurrentElectricity().ToString());
+            InformationManager.Instance.updateMarketInfoBoxText();
             
         }
 
         
+    }
+
+    public void SellElectriciyButton(){
+        MarketManager.Instance.sellMarketElectricity();
+    }
+
+    public void BuyElectricityButton(){
+        MarketManager.Instance.buyMarketElectricity();
     }
 
     public void provideEleAndMoney(){
