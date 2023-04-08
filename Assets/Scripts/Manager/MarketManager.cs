@@ -39,11 +39,11 @@ public class MarketManager : Singleton<MarketManager>
     }
 
     public int getCurrentMoneyNum(){
-        return ResourceManager.Instance.getTargetCardsNum(17)+MarketManager.Instance.bufferMoney;
+        return ResourceManager.Instance.getTargetCardsNum(17) + bufferMoney;
     }
 
     public int getCurrentElectricity(){
-        return ResourceManager.Instance.getElectricityCardNum()+MarketManager.Instance.bufferElectricity;
+        return ResourceManager.Instance.getElectricityCardNum() + bufferElectricity;
     }
 
     public bool checkedMoneyState(int price){
@@ -61,6 +61,8 @@ public class MarketManager : Singleton<MarketManager>
     }
 
     public void buyMarketElectricity(){
+        int currentElectricity = getCurrentElectricity();
+        int currentMoneyNum = getCurrentMoneyNum();
         if(checkedMoneyState(buyPrice)){
             int remainMoney = bufferMoney - buyPrice;
             if(remainMoney > 0){
@@ -70,13 +72,17 @@ public class MarketManager : Singleton<MarketManager>
             }
             ResourceManager.Instance.consumeMoney(-remainMoney);
             bufferElectricity += buyNum;
-            InformationManager.Instance.updateMarketInfoBoxText();
+            currentElectricity += buyNum;
+            currentMoneyNum -= buyPrice;
+            InformationManager.Instance.setMarketInfoBoxText(currentMoneyNum.ToString(),currentElectricity.ToString());
         }else{
             InformationManager.Instance.setMarketNotationInfo("You Do Not Have Enough Money To Buy Electricity.");
         }
     }
 
     public void sellMarketElectricity(){
+        int currentElectricity = getCurrentElectricity();
+        int currentMoneyNum = getCurrentMoneyNum();
         if(checkedElectricityState(sellNum)){
             int remainElectriciy = bufferElectricity - sellNum;
             if(remainElectriciy > 0){
@@ -84,9 +90,11 @@ public class MarketManager : Singleton<MarketManager>
             }else{
                 bufferElectricity = 0;
             }
-            ResourceManager.Instance.consumeMoney(-remainElectriciy);
+            ResourceManager.Instance.consumeElectricity(-remainElectriciy);
             bufferMoney += sellPrice;
-            InformationManager.Instance.updateMarketInfoBoxText();
+            currentMoneyNum +=sellPrice;
+            currentElectricity -=sellNum;
+            InformationManager.Instance.setMarketInfoBoxText(currentMoneyNum.ToString(),currentElectricity.ToString());
         }else{
             InformationManager.Instance.setMarketNotationInfo("You Do Not Have Enough Electricity To Sell.");
         }

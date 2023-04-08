@@ -43,7 +43,7 @@ public class InformationManager : Singleton<InformationManager>
         updateSmartMeterInfo();
     }
 
-    public void setCurrentRlectricityInfo(){
+    public void setCurrentelectricityInfo(){
         int CurrentElectricityNum = ResourceManager.Instance.getElectricityCardNum();
         CurrentElectricityInfo.text = CurrentElectricityNum.ToString();
     }
@@ -79,7 +79,7 @@ public class InformationManager : Singleton<InformationManager>
 
 
     public void updateSmartMeterInfo(){
-        setCurrentRlectricityInfo();
+        setCurrentelectricityInfo();
         setElectricityRequireInfo();
         setResidentNumInfo();
         setResidentCapacityInfo();

@@ -221,7 +221,10 @@ public class Stack : MonoBehaviour
     }
 
     public void destroyStack(){
-        stackedCards[0].loadingBar.Enable(false);
+        if(stackedCards[0] != null){
+            stackedCards[0].loadingBar.Enable(false);
+        }
+        
         Destroy(this.gameObject);
     }
 

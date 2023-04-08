@@ -10,6 +10,7 @@ public class MarketMenuButtonControl : MonoBehaviour
         MenuManager.Instance.activiteMarketMenu(false);
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
         provideEleAndMoney();
+        InformationManager.Instance.setMarketNotationInfo("");
     }
 
     public void MarketButton(){
