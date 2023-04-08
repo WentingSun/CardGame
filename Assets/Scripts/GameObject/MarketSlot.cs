@@ -33,7 +33,7 @@ public class MarketSlot : MonoBehaviour
 
     public void purchaseTheCard(){ 
         notaionContents = "You Can't Buy It Now.";
-        if(checkedMoneyState()){
+        if(MarketManager.Instance.checkedMoneyState(price)){
             if(!isSold){
                 isSold = true;
                 SoldoutPic.SetActive(true);
@@ -44,18 +44,13 @@ public class MarketSlot : MonoBehaviour
                 InformationManager.Instance.setMarketNotationInfo(notaionContents);
             }
         }else{
+            notaionContents += "\n You Don't Have Enough Money!";
             InformationManager.Instance.setMarketNotationInfo(notaionContents);
         }
         
 
     }
 
-    private bool checkedMoneyState(){
-        if(ResourceManager.Instance.getTargetCardsNum(17) >= price){
-            return true;
-        }
-        return false;
-    }
 
     public void resetTheProduct(){
         Debug.Log("resetTheProduct()");

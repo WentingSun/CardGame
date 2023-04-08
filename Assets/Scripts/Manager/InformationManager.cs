@@ -11,6 +11,8 @@ public class InformationManager : Singleton<InformationManager>
     public TextMeshProUGUI ResidentCapacityInfo;
     public TextMeshProUGUI MarketNotationInfo;
 
+    public GameObject MarketInfoBox;
+
 
     private TextMeshProUGUI InformationBoxText;
     private GameObject InformationBox;
@@ -63,6 +65,11 @@ public class InformationManager : Singleton<InformationManager>
 
     public void setMarketNotationInfo(string contents){
         MarketNotationInfo.text = contents;
+    }
+
+    public void setMarketInfoBoxText(string moneyNum, string electricityNum){
+        MarketInfoBox.transform.Find("MoneyNum").GetComponent<TextMeshProUGUI>().text = moneyNum;
+        MarketInfoBox.transform.Find("ElectricityNum").GetComponent<TextMeshProUGUI>().text = electricityNum;
     }
 
 

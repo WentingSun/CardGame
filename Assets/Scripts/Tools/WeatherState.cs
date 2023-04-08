@@ -11,6 +11,14 @@ public enum WeatherState{
     Snow
 }
 
+public enum SeasonState{
+    Spring,
+    Summer,
+    Autumm,
+    Winter
+
+}
+
 public class WeatherStateConstants{
     public static readonly List<WeatherState> SpringWeatherStates = new List<WeatherState>(){WeatherState.Sunny,WeatherState.Sunny,WeatherState.Rainy,WeatherState.Rainy,WeatherState.Windy,WeatherState.Windy};
     public static readonly List<WeatherState> SummerWeatherStates = new List<WeatherState>(){WeatherState.Sunny,WeatherState.Sunny,WeatherState.Rainstorms,WeatherState.Rainy,WeatherState.Windy,WeatherState.Windy};

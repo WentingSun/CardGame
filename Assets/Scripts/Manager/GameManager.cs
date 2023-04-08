@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
 
     public GameState State;
     public WeatherState currentWeatherState;
+    public SeasonState currentSeasonState;
+
     public float turnScale = 60;
     private int consecutiveTurn;
 
