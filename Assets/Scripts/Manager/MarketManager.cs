@@ -61,7 +61,7 @@ public class MarketManager : Singleton<MarketManager>
     }
 
     public void buyMarketElectricity(){
-        int currentElectricity = getCurrentElectricity();
+        int currentElectricity = getCurrentElectricity();// Because Destory() will have some delay, information.Update method wil not correct. Using int change to instead of.
         int currentMoneyNum = getCurrentMoneyNum();
         if(checkedMoneyState(buyPrice)){
             int remainMoney = bufferMoney - buyPrice;
@@ -102,8 +102,17 @@ public class MarketManager : Singleton<MarketManager>
 
     public void purchasingTheCard(CardData cardData, int price){
         purchasedCards.Add(cardData);
-        int consumeMoney = price - bufferMoney;
-        ResourceManager.Instance.consumeMoney(consumeMoney);
+        int currentElectricity = getCurrentElectricity();
+        int currentMoneyNum = getCurrentMoneyNum();
+        int remainMoney = bufferMoney - price;
+        if(remainMoney >0){
+            bufferMoney = remainMoney;
+        }else{
+            bufferMoney = 0;
+        }
+        ResourceManager.Instance.consumeMoney(-remainMoney);
+        currentMoneyNum -=price;
+        InformationManager.Instance.setMarketInfoBoxText(currentMoneyNum.ToString(),currentElectricity.ToString());
     }
 
     public void MarketManagerOnGameStateChange(GameState gameState){
