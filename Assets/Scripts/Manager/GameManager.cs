@@ -117,11 +117,11 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void resetTheMarket(){
-
+        MarketManager.Instance.resetAllMarketProduct();
     }
 
     private void supplyTheProduct(){
-
+        MarketManager.Instance.supplyCardAtStart();
     }
 
     private void playerGrabTheCurrentWeather(){
@@ -132,6 +132,8 @@ public class GameManager : Singleton<GameManager>
     private void initTurn(){
 
     }
+
+    
 
 
 

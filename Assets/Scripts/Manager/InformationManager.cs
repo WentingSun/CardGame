@@ -103,6 +103,49 @@ public class InformationManager : Singleton<InformationManager>
         
     }
 
+    public void showInInformationBox(string contents,CardData cardData,int resourceNum, bool auto = false){
+        if(inforBoxActivity){
+            InformationBox.SetActive(true);
+            InformationBoxText.text = contents;
+            InformationBoxText.enableAutoSizing = auto;
+            isShowing = true;
+        }
+            InformationBoxText.text += getExtraInformation(cardData,resourceNum);
+    }
+
+    private string getExtraInformation(CardData cardData, int resourceNum){
+        string result = "\n\n";
+        switch(cardData.cardId){
+            case 3:
+            result += $"The remaining number of excavation attempts is {resourceNum}.";
+            break;
+            case 6:
+            result += $"Remaining lifespan is {resourceNum}.";
+            break;
+            case 7:
+            result += $"Remaining lifespan is {resourceNum}.";
+            break;
+            case 10:
+            result += $"The remaining number of excavation attempts is {resourceNum}.";
+            break;
+            case 11:
+            result += $"The stored amount of electricity is {resourceNum}.";
+            break;
+            case 12:
+            result += $"The stored amount of electricity is {resourceNum}.";
+            break;
+            case 13:
+            result += $"The stored amount of electricity is {resourceNum}.";
+            break;
+            default:
+            
+            break;
+        }
+        return result;
+    }
+
+    
+
     private void informationManagerOnGameStateChange(GameState gameState){
         if(gameState == GameState.Market){
             inforBoxActivity =false;

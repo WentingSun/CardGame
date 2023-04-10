@@ -52,24 +52,27 @@ public class MarketSlot : MonoBehaviour
     }
 
 
-    public void resetTheProduct(){
-        Debug.Log("resetTheProduct()");
+   private void resetTheProduct(){
         isSold = false;
         CardData newCardData = GameHelperFunction.RandomSelect(ResourceManager.Instance.productList);
         Product.loadCardDataInthisCard(newCardData);
-
+        SoldoutPic.SetActive(false);
 
 
     }
 
     private void resetThePrice(){
         System.Random random = new System.Random();
-        int newPrice = random.Next(Product.cardData.basicPrice-3,Product.cardData.basicPrice+3);
+        int newPrice = random.Next(Product.cardData.basicPrice,Product.cardData.basicPrice+3);
         newPrice = Math.Max(1,newPrice);
         price = Math.Min(newPrice,Product.cardData.basicPrice*3);
         priceText.text = $"$ {price}";
     }
 
+    public void resetMarketSlot(){
+        resetTheProduct();
+        resetThePrice();
+    }
     
     private Card getProduct(){
         return Product;

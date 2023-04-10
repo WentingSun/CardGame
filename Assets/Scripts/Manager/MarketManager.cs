@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MarketManager : Singleton<MarketManager>
 {
-    public GameObject testObj;
+
     public GameObject supplyArea;
     public List<CardData> purchasedCards;
+    public List<MarketSlot> wholeMarketSlot;
+
     public int bufferMoney = 0;
     public int bufferElectricity = 0;
 
@@ -21,6 +23,11 @@ public class MarketManager : Singleton<MarketManager>
         bufferElectricity = 3;//Testing code
         GameManager.OnGameStateChange += MarketManagerOnGameStateChange;
         purchasedCards.Clear();
+        
+    }
+
+    private void Start() {
+        supplyArea = ResourceManager.Instance.canvasTransform.Find("Supply area").gameObject;
     }
 
     protected override void OnDestroy()
@@ -29,11 +36,27 @@ public class MarketManager : Singleton<MarketManager>
         GameManager.OnGameStateChange -= MarketManagerOnGameStateChange;
     }
 
-
-    public void testButton(){
-        Card.createCard(ResourceManager.Instance.cardDatas[1], testObj.transform);
+    public void loadAllMarketSlot(){
+        Transform MarketSlots = MenuManager.Instance.MarketMenu.transform.Find("MarketSlots");
+        wholeMarketSlot.Add(MarketSlots.Find("MarketSlot01").GetComponent<MarketSlot>());
+        wholeMarketSlot.Add(MarketSlots.Find("MarketSlot02").GetComponent<MarketSlot>());
+        wholeMarketSlot.Add(MarketSlots.Find("MarketSlot03").GetComponent<MarketSlot>());
+        wholeMarketSlot.Add(MarketSlots.Find("MarketSlot04").GetComponent<MarketSlot>());
+        wholeMarketSlot.Add(MarketSlots.Find("MarketSlot05").GetComponent<MarketSlot>());
     }
-    
+
+    public void resetAllMarketProduct(){
+        foreach(MarketSlot marketSlot in wholeMarketSlot){
+            marketSlot.resetMarketSlot();
+        }
+    }
+
+    public void supplyCardAtStart(){
+        foreach(CardData cardData in purchasedCards){
+            provideCard(cardData);
+        }
+    }
+
     public void provideCard(CardData cardData){
         Card.createCard(cardData, supplyArea.transform);
     }
@@ -116,7 +139,9 @@ public class MarketManager : Singleton<MarketManager>
     }
 
     public void MarketManagerOnGameStateChange(GameState gameState){
-
+        if(wholeMarketSlot.Count == 0){
+            loadAllMarketSlot();
+        }
     }
 
 

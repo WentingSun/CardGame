@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b7a8d58eb66f740b2ff7bca3a353ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  State: 1
+  State: 0
   currentWeatherState: 0
   currentSeasonState: 0
   turnScale: 60

@@ -59,7 +59,6 @@ public class Card : MonoBehaviour
     }
 
     public void activateItCollider(bool activity){
-        Debug.Log(activity);
         this.gameObject.GetComponent<BoxCollider2D>().enabled = activity;
     }
 
@@ -215,7 +214,7 @@ public class Card : MonoBehaviour
    }
 
    private void OnMouseOver(){
-     InformationManager.Instance.showInInformationBox(this.cardData.description);    
+     InformationManager.Instance.showInInformationBox(this.cardData.description,this.cardData,this.resourceNum);    
    }
 
    void OnMouseEnter() {
@@ -247,15 +246,17 @@ public class Card : MonoBehaviour
             cardImage.sprite = cardData.cardPic;
             nameText.text = cardData.cardName;
             cardId = cardData.cardId;
+            resourceNum = cardData.resourceNum;
         }
     }
 
     public void loadCardDataInthisCard(CardData _cardData){
-        Debug.Log("loadCardDataInthisCard(CardData _cardData)");
+
         cardImage.sprite = _cardData.cardPic;
         nameText.text = _cardData.cardName;
         cardId = _cardData.cardId;
         cardData = _cardData;
+        resourceNum = _cardData.resourceNum;
     }
 
     // Update is called once per frame
