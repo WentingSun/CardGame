@@ -34,10 +34,6 @@ public class MenuManager : Singleton<MenuManager>
     }
 
     private void Update() {
-        if(WeatherMenu == null 
-        || MarketMenu == null){
-            loadMenu();
-        }
     }
 
     protected override void OnDestroy()
@@ -46,8 +42,11 @@ public class MenuManager : Singleton<MenuManager>
         GameManager.OnGameStateChange -= MenuManagerOnGameStateChanged;
     }
 
-    void MenuManagerOnGameStateChanged(GameState newState){
-
+    private void MenuManagerOnGameStateChanged(GameState newState){
+        if(WeatherMenu == null 
+        || MarketMenu == null){
+            loadMenu();
+        }
     }
 
     public void GrabWeatherCard(){

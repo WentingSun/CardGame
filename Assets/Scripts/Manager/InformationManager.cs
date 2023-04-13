@@ -9,6 +9,7 @@ public class InformationManager : Singleton<InformationManager>
     public TextMeshProUGUI ElectricityRequireInfo;
     public TextMeshProUGUI ResidentNumInfo;
     public TextMeshProUGUI ResidentCapacityInfo;
+    public TextMeshProUGUI WeatherNotaion;
     public TextMeshProUGUI MarketNotationInfo;
 
     public GameObject MarketInfoBox;
@@ -65,6 +66,14 @@ public class InformationManager : Singleton<InformationManager>
 
     public void setMarketNotationInfo(string contents){
         MarketNotationInfo.text = contents;
+    }
+
+    public void setWeatherNotationInfor(WeatherState weather){
+        WeatherNotaion.text = ResourceManager.Instance.weatherDictionary[weather].description;
+    }
+
+    public void EmptyWeatherNotationInfor(){
+        WeatherNotaion.text = "";
     }
 
     public void setMarketInfoBoxText(string moneyNum, string electricityNum){

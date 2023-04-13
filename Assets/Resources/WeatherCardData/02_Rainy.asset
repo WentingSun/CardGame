@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardId: 2
   cardName: Rainy
-  description: This is rainny day
+  description: This turn is rainny day
   cardPic: {fileID: 21300000, guid: 5daaba92fae87e64cb623b720beb7809, type: 3}
   weatherState: 2
