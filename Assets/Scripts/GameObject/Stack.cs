@@ -115,12 +115,12 @@ public class Stack : MonoBehaviour
                 }
             }
             else if(cardIds[0] == 12 && cardIds.FindLastIndex(x => x == 5) != -1){
-                // if(stackedCards[0].resourceNum < 15){
+                if(stackedCards[0].resourceNum < 15){
                     result.Add(new StackTask(TaskType.Idle,0,1));
                     result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),0));
                     result.Add(new StackTask(TaskType.ChangeCardValue,0,1));
                     
-                // }
+                }
             }
             else if(cardIds[0] == 13 && cardIds.FindLastIndex(x => x == 5) != -1){
                 if(stackedCards[0].resourceNum < 20){
@@ -142,7 +142,7 @@ public class Stack : MonoBehaviour
             }else if(cardIds[0] == 7){
                 result.Add(new StackTask(TaskType.Create,5,getWindTurbineTaskTime()));
             }else if(cardIds[0] == 12){
-                if(stackedCards[0].resourceNum < 20){
+                if(stackedCards[0].resourceNum < 15){
                     int time = getHydroelectricityTaskTime();
                     if(time >0){
                         result.Add(new StackTask(TaskType.Idle,0,getHydroelectricityTaskTime()));

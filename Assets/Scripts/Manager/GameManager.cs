@@ -144,6 +144,7 @@ public class GameManager : Singleton<GameManager>
     private void consumeElectricityInStorage()
     {
         ResourceManager.Instance.consumeStorageElectricity();
+        ResourceManager.Instance.consumeAllElectricity();
     }
 
     private void resetTheMarket(){

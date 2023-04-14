@@ -128,10 +128,15 @@ public class ResourceManager : Singleton<ResourceManager>
             if(WholeCardsList[i].cardData.cardId == 5 && num > 0){
                 WholeCardsList[i].consumeThisCard();
                 num --;
-            }else if(num > 0 && (WholeCardsList[i].cardData.cardId == 11 || WholeCardsList[i].cardData.cardId == 12 || WholeCardsList[i].cardData.cardId == 13)){
-                int consumeNum = Mathf.Min(num,WholeCardsList[0].resourceNum);
-                num -= consumeNum;
-                WholeCardsList[0].resourceNum -= consumeNum;
+            }
+        }
+        if(num > 0){
+            for(int i =0 ; i <WholeCardsList.Count; i++){
+                if(WholeCardsList[i].cardData.cardId == 11 || WholeCardsList[i].cardData.cardId == 12 || WholeCardsList[i].cardData.cardId == 13){
+                    int consumeNum = Mathf.Min(num,WholeCardsList[i].resourceNum);
+                    num -= consumeNum;
+                    WholeCardsList[i].resourceNum -= consumeNum;
+                }
             }
         }
     }
@@ -151,7 +156,7 @@ public class ResourceManager : Singleton<ResourceManager>
     public void consumeStorageElectricity(){
         for(int i =0 ; i <WholeCardsList.Count; i++){
             if(WholeCardsList[i].cardData.cardId == 11 || WholeCardsList[i].cardData.cardId == 12){
-                WholeCardsList[i].resourceNum = (int)(WholeCardsList[i].resourceNum*0.7);
+                WholeCardsList[i].resourceNum = (int)(WholeCardsList[i].resourceNum*0.8);
             }
 
         }
@@ -185,7 +190,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
     public void consumeAllElectricity(){
         foreach(Card cards in WholeCardsList){
-            if (cards.cardData.cardId == 4){
+            if (cards.cardData.cardId == 5){
                 cards.consumeThisCard();
             }
         }
