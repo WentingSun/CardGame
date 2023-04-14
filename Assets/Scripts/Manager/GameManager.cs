@@ -12,6 +12,8 @@ public class GameManager : Singleton<GameManager>
     public WeatherState currentWeatherState;
     public SeasonState currentSeasonState;
 
+    public int strikeRoundNum = 0;
+
     public float turnScale = 60;
     private int consecutiveTurn;
 
@@ -107,11 +109,11 @@ public class GameManager : Singleton<GameManager>
         // InformationManager.Instance.updateSmartMeterInfo();
     }
 
-    private void consumeLifeSpanOfSomeCard(){
+    private void consumeLifeSpanOfSomeCard(){//todo
         
     }
 
-    private void consumeElectricityInStorage()
+    private void consumeElectricityInStorage()//todo
     {
         
     }

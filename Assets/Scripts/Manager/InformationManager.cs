@@ -147,7 +147,7 @@ public class InformationManager : Singleton<InformationManager>
             result += $"The stored amount of electricity is {resourceNum}.";
             break;
             default:
-            
+            result = "";
             break;
         }
         return result;

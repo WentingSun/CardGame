@@ -21,7 +21,7 @@ public class Card : MonoBehaviour
     [SerializeField] Collider2D touchedCollider;
 
 
-    [SerializeField] int resourceNum;
+    public int resourceNum;
 
     public Stack currentStack;
     [SerializeField] List<Transform> upperCards;
@@ -133,6 +133,12 @@ public class Card : MonoBehaviour
         
     }
 
+    public void changeCardData(int Id){
+        CardData newData = ResourceManager.Instance.cardDatas[Id];
+        loadCardDataInthisCard(newData);
+    }
+
+
     
     
     private void OnMouseDrag()
@@ -214,7 +220,7 @@ public class Card : MonoBehaviour
    }
 
    private void OnMouseOver(){
-     InformationManager.Instance.showInInformationBox(this.cardData.description,this.cardData,this.resourceNum);    
+     InformationManager.Instance.showInInformationBox(this.cardData.description,this.cardData,this.resourceNum, true);    
    }
 
    void OnMouseEnter() {
@@ -231,7 +237,7 @@ public class Card : MonoBehaviour
     {
         // getLoadingBar();
         loadCardData();
-        if (currentStack == null && GameManager.Instance.State == GameState.PlayerTurn){
+        if (currentStack == null && GameManager.Instance.State != GameState.Market){ // test code todo remove it in future
             createStack();      
         }
         

@@ -6,6 +6,7 @@ public enum TaskType{
     ChangeBarValue,
     ChangeCardValue,
     ChangePlayBuff,
+    IdealSolutionCard,
     Idle
 }
 

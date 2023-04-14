@@ -15,8 +15,9 @@ public class ResourceManager : Singleton<ResourceManager>
 
     [SerializeField] List<Card> WholeCardsList;
     [SerializeField] List<Stack> WholeStacksList;
-    public List<WeatherState> WeatherCardDeck;
-    
+    public List<WeatherState> WeatherCardDeck;//todo
+    public List<WeatherState> BadWeatherCardDeck;
+    public List<WeatherState> GoodWeatherCardDeck;
 
     private int rewardResisdentCapacity = 0;
 
@@ -38,7 +39,9 @@ public class ResourceManager : Singleton<ResourceManager>
         weatherCardPic = Resources.LoadAll<Sprite>("Image/WeatherCardPic");
         GameManager.OnGameStateChange += ResourceManagerOnGameStateChanged;
         weatherDictionary = weatherCardDatas.ToDictionary(x => x.weatherState, x =>x);
-        WeatherCardDeck.AddRange(WeatherStateConstants.SpringWeatherStates);
+        GoodWeatherCardDeck = WeatherStateConstants.SpringWeatherStates;
+        WeatherCardDeck.AddRange(GoodWeatherCardDeck);
+        WeatherCardDeck.AddRange(BadWeatherCardDeck);
         canvasTransform = GameObject.Find("Canvas").transform;
         productList = cardDatas.ToList().FindAll(x => x.basicPrice >= 0);
     }
@@ -77,7 +80,9 @@ public class ResourceManager : Singleton<ResourceManager>
             foreach(Card cards in WholeCardsList){
                 if(cards.cardData != null && cards.cardData.cardId == 5){
                     result ++;
-                }//todo else if(cards.cardData.cardId == ){result += cards.resuorceNum}
+                }else if(cards.cardData != null && (cards.cardData.cardId == 11|| cards.cardData.cardId == 12 || cards.cardData.cardId == 13)){
+                    result += cards.resourceNum;
+                }
             }
           }
         return result;
@@ -114,7 +119,7 @@ public class ResourceManager : Singleton<ResourceManager>
         return this.rewardResisdentCapacity;
     }
 
-    public void consumeElectricity(int num){
+    public void consumeElectricity(int num){//todo
         for(int i =0 ; i <WholeCardsList.Count; i++){
             if(WholeCardsList[i].cardData.cardId == 5 && num > 0){
                 WholeCardsList[i].consumeThisCard();
@@ -173,6 +178,16 @@ public class ResourceManager : Singleton<ResourceManager>
     public void removingStackList(Stack stack){
         WholeStacksList.Remove(stack);
         InformationManager.Instance.updateSmartMeterInfo();
+    }
+
+    public void updateWeatherDeck(){
+        this.WeatherCardDeck.Clear();
+        WeatherCardDeck.AddRange(GoodWeatherCardDeck);
+        WeatherCardDeck.AddRange(BadWeatherCardDeck);
+    }
+
+    public void IdealSolutionCard(){
+        BadWeatherCardDeck.Clear();
     }
 
 

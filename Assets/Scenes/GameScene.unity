@@ -222,7 +222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737641, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737645, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: canvas
@@ -971,7 +971,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737641, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737645, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: canvas
@@ -3031,7 +3031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737641, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737644, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: m_Constraints
@@ -3596,7 +3596,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737641, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737645, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: canvas
@@ -7187,7 +7187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737641, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3335561277953737645, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: canvas

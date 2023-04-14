@@ -62,7 +62,7 @@ public class Stack : MonoBehaviour
     private void updateStackState(){
         List<StackTask> tasks = checkTheCombine();
         for(int i = 0; i < stackedCards.Count; i++){
-            if(i == 0 && tasks.Count > 0){
+            if(i == 0 && tasks.Count > 0 && GameManager.Instance.State != GameState.Market){
                 stackedCards[i].loadingBar.processingLoad(tasks,processingStack);
             }else{
                 stackedCards[i].loadingBar.Enable(false);
@@ -74,20 +74,66 @@ public class Stack : MonoBehaviour
             
 
 
-    private List<StackTask> checkTheCombine(){//TODO add more combine
+    private List<StackTask> checkTheCombine(){//TODO add more combine This function
         // Debug.Log("checkTheCombine()");
         List<StackTask> result = new List<StackTask>();
         if(cardIds.Count>1){
-            if(cardIds[0] == 3 && cardIds[1] == 1){
+            if(cardIds[0] == 3 && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
+                result.Add(new StackTask(TaskType.Idle,0,5));
+                result.Add(new StackTask(TaskType.ChangeCardValue,0,-1));
                 result.Add(new StackTask(TaskType.Create,2,5));
-                result.Add(new StackTask(TaskType.ChangeBarValue,0,1f));
-            }else if(cardIds[0] == 4 && cardIds[1] == 1){// TODO testing CODE, you should change it in future
-                result.Add(new StackTask(TaskType.Destroy,1,5));
+                if(stackedCards[0].resourceNum - 1 == 0)result.Add(new StackTask(TaskType.Destroy,0,-1));
+                if(GameManager.Instance.currentWeatherState == WeatherState.AirPollution) result.Add(new StackTask(TaskType.ChangeBarValue,1,-7));
+            }else if(cardIds[0] == 10 && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
+                result.Add(new StackTask(TaskType.Idle,0,5));
+                result.Add(new StackTask(TaskType.ChangeCardValue,0,-1));
+                result.Add(new StackTask(TaskType.Create,2,9));
+                if(stackedCards[0].resourceNum - 1 == 0)result.Add(new StackTask(TaskType.Destroy,0,-1));
+                if(GameManager.Instance.currentWeatherState == WeatherState.AirPollution) result.Add(new StackTask(TaskType.ChangeBarValue,1,-7));
+            }else if(cardIds[0] == 4 && cardIds.FindLastIndex(x => x == 2) != -1 ){
+                result.Add(new StackTask(TaskType.Idle,0,5));
+                result.Add(new StackTask(TaskType.ChangeBarValue,0,-5));
+                result.Add(new StackTask(TaskType.Change,cardIds.FindLastIndex(x => x == 2),5));  
+            }else if(cardIds[0] == 6  && cardIds[1] == 1){
+                result.Add(new StackTask(TaskType.Idle,0,5));
+                float taskValue = Mathf.Min(20-stackedCards[0].resourceNum,5);
+                result.Add(new StackTask(TaskType.ChangeCardValue,0,taskValue));
+            }else if(cardIds[0] == 7  && cardIds[1] == 1){
+                result.Add(new StackTask(TaskType.Idle,0,5));
+                float taskValue = Mathf.Min(14-stackedCards[0].resourceNum,3);
+                result.Add(new StackTask(TaskType.ChangeCardValue,0,taskValue));
+            }else if(cardIds[0] == 16 && cardIds.FindLastIndex(x => x == 9) != -1){
+                result.Add(new StackTask(TaskType.Idle,0,5));
+                result.Add(new StackTask(TaskType.ChangeBarValue,0,-10));
+                result.Add(new StackTask(TaskType.Change,cardIds.FindLastIndex(x => x == 2),11));
+            }else if(cardIds[0] == 11 && cardIds.FindLastIndex(x => x == 5) != -1){
+                if(stackedCards[0].resourceNum < 10){
+                    result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),1));
+                    result.Add(new StackTask(TaskType.ChangeCardValue,0,1));
+                }
+            }else if(cardIds[0] == 12 && cardIds.FindLastIndex(x => x == 5) != -1){
+                if(stackedCards[0].resourceNum < 15){
+                    result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),2));
+                    result.Add(new StackTask(TaskType.ChangeCardValue,0,1));
+                }
+            }else if(cardIds[0] == 13 && cardIds.FindLastIndex(x => x == 5) != -1){
+                if(stackedCards[0].resourceNum < 20){
+                    result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),1));
+                    result.Add(new StackTask(TaskType.ChangeCardValue,0,1));
+                }
+            }else if(cardIds[0] == 14 && cardIds[1] == 1 && cardIds.FindLastIndex(x => x ==1) != 1){ // mutiple human card
+                result.Add(new StackTask(TaskType.Idle,0,30));
+                result.Add(new StackTask(TaskType.Change,0,15));
+            }else if(cardIds[0] == 15 && cardIds[1] == 1 && cardIds.FindLastIndex(x => x ==1) != 1){
+                result.Add(new StackTask(TaskType.Idle,0,45));
+                result.Add(new StackTask(TaskType.IdealSolutionCard,0,0));
             }
         }else if(cardIds.Count == 1){
             if(cardIds[0] == 6){
                 result.Add(new StackTask(TaskType.Create,5,getSolarPlaneTaskTime()));
             }
+            if(cardIds[0] == 7)
+                result.Add(new StackTask(TaskType.Create,5,getWindTurbineTaskTime()));
         }
         return result;
     }
@@ -101,9 +147,35 @@ public class Stack : MonoBehaviour
             case WeatherState.Rainy:
             result = -1; // -1 means not enable the loading bar
             break;
+            case WeatherState.AirPollution:
+            result = 26;
+            break;
             default:
             result = 20;
             break;
+        }
+        return result;
+    }
+
+    private int getWindTurbineTaskTime(){
+        int result = 20;
+        switch(GameManager.Instance.currentWeatherState){
+            case WeatherState.Windy:
+            result = 10;
+            break;
+            case WeatherState.AirPollution:
+            result = 26;
+            break;
+            case WeatherState.UrbanHeatIsland:
+            result = 13;
+            break;
+            case WeatherState.Rainstorms:
+            result = 7;
+            break;
+            default:
+            result = 20;
+            break;
+            
         }
         return result;
     }
@@ -120,6 +192,7 @@ public class Stack : MonoBehaviour
 
             case TaskType.Change:
                 Debug.Log("TaskType.Change");
+                stackedCards[stackTask.taskIndex].changeCardData((int)stackTask.taskValue);
                 checkStackState();
             break;
 
@@ -141,8 +214,17 @@ public class Stack : MonoBehaviour
 
                 }
                 break;
+            
+            case TaskType.ChangeCardValue:
+                Debug.Log("TaskType.ChangeCardValue");
+                stackedCards[stackTask.taskIndex].resourceNum += (int)stackTask.taskValue;
+                break;
 
-            case TaskType.Idle:
+            case TaskType.IdealSolutionCard://use to add task time, and combine with other Tasks
+                ResourceManager.Instance.IdealSolutionCard();
+            break;
+
+            case TaskType.Idle://use to add task time, and combine with other Tasks
                 Debug.Log("Idle");
             break;
             

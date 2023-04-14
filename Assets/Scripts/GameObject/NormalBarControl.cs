@@ -25,7 +25,7 @@ public class NormalBarControl : MonoBehaviour
         barName = this.gameObject.name;
     }
 
-    private void checkBarState(){
+    private void checkBarState(){//todo
 
     }
 
