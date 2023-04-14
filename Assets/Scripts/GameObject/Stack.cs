@@ -354,7 +354,7 @@ public class Stack : MonoBehaviour
     void Start()
     {
        cardDatas = ResourceManager.Instance.cardDatas;
-    //    checkStackState();
+       checkStackState();
     //    foreach(Card card in stackedCards){
     //     card.loadCardData();
     //    }

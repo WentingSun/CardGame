@@ -667,11 +667,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e90b6b08a5c53b449f79dce89b6677c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Product: {fileID: 0}
+  Product: {fileID: 535992795642737399}
   price: 0
   isSold: 0
-  priceText: {fileID: 0}
-  SoldoutPic: {fileID: 0}
+  priceText: {fileID: 2970812062123745261}
+  SoldoutPic: {fileID: 2970812063699451879}
 --- !u!1 &2970812063425358404
 GameObject:
   m_ObjectHideFlags: 0
