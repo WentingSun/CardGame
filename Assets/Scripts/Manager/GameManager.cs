@@ -11,11 +11,12 @@ public class GameManager : Singleton<GameManager>
     public GameState State;
     public WeatherState currentWeatherState;
     public SeasonState currentSeasonState;
+    public  int TurnNum = 1;
 
     public int strikeRoundNum = 0;
 
     public float turnScale = 60;
-    private int consecutiveTurn;
+    private int consecutiveTurn = 0;
 
     public static event Action<GameState> OnGameStateChange;
     public static event Action<WeatherState> onWeatherStateChange;
@@ -59,10 +60,17 @@ public class GameManager : Singleton<GameManager>
         // ResourceManager.Instance.resetAllStackPos();
         // InformationManager.Instance.updateSmartMeterInfo();
         resetTurnBar();
-        consumeElectricityInStorage();//todo
-        supplyTheProduct();//todo
-        resetTheMarket();//todo
-        playerGrabTheCurrentWeather();//todo
+        consumeElectricityInStorage();
+        supplyTheProduct();
+        if(TurnNum % 4 == 3){
+            addingNewHuman();
+        }
+        if(consecutiveTurn != 0){
+            rewardHumanitierBar();
+        }
+        ResourceManager.Instance.changeNaturalBarValue(5);
+        resetTheMarket();
+        playerGrabTheCurrentWeather();
         
         Debug.Log("Start");
     }
@@ -78,7 +86,15 @@ public class GameManager : Singleton<GameManager>
         if(checkCountinue()){
             Debug.Log("Continue");
             consumeElectricityAtSettlement();
-            consumeLifeSpanOfSomeCard();//todo
+            consumeHumanAtSettlement();
+            consumeLifeSpanOfSomeCard();
+            TurnNum += 1;
+            if(currentWeatherState != WeatherState.AirPollution){
+                consecutiveTurn += 1;
+            }
+            if(strikeRoundNum > 0){
+                strikeRoundNum -= 1;
+            }
             UpdateGameState(GameState.Start);
         }else{
             UpdateGameState(GameState.GameOver);
@@ -109,13 +125,25 @@ public class GameManager : Singleton<GameManager>
         // InformationManager.Instance.updateSmartMeterInfo();
     }
 
-    private void consumeLifeSpanOfSomeCard(){//todo
-        
+    private void consumeHumanAtSettlement(){
+        int currentHumanNum = ResourceManager.Instance.getTargetCardsNum(1);
+        int currentResidentCapacity = ResourceManager.Instance.getResidentCapacityNum();
+        if(currentHumanNum > currentResidentCapacity){
+            ResourceManager.Instance.consumeHuman(currentHumanNum - currentResidentCapacity);
+        }
     }
 
-    private void consumeElectricityInStorage()//todo
+    private void addingNewHuman(){
+        MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[1]);
+    }
+
+    private void consumeLifeSpanOfSomeCard(){
+        ResourceManager.Instance.consumeLifeSpanOfSomeCard();
+    }
+
+    private void consumeElectricityInStorage()
     {
-        
+        ResourceManager.Instance.consumeStorageElectricity();
     }
 
     private void resetTheMarket(){
@@ -129,6 +157,10 @@ public class GameManager : Singleton<GameManager>
     private void playerGrabTheCurrentWeather(){
         MenuManager.Instance.activiteWeatherMenu(true);
         
+    }
+
+    private void rewardHumanitierBar(){
+        ResourceManager.Instance.changeHumanitiesBarValue(consecutiveTurn+3);
     }
 
     private void initTurn(){

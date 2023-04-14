@@ -19,8 +19,8 @@ public class MarketManager : Singleton<MarketManager>
 
     protected override void Awake() {
         base.Awake();
-        bufferMoney = 2;
-        bufferElectricity = 3;//Testing code
+        // bufferMoney = 2;
+        // bufferElectricity = 3;//Testing code
         GameManager.OnGameStateChange += MarketManagerOnGameStateChange;
         purchasedCards.Clear();
         
@@ -77,7 +77,7 @@ public class MarketManager : Singleton<MarketManager>
     }
 
     public bool checkedElectricityState(int price){
-        if(ResourceManager.Instance.getTargetCardsNum(5) + bufferElectricity  >= price){
+        if(ResourceManager.Instance.getElectricityCardNum() + bufferElectricity  >= price){
             return true;
         }
         return false;
@@ -105,6 +105,7 @@ public class MarketManager : Singleton<MarketManager>
 
     public void sellMarketElectricity(){
         int currentElectricity = getCurrentElectricity();
+        Debug.Log(currentElectricity);
         int currentMoneyNum = getCurrentMoneyNum();
         if(checkedElectricityState(sellNum)){
             int remainElectriciy = bufferElectricity - sellNum;

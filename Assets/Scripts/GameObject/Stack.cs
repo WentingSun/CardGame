@@ -108,18 +108,26 @@ public class Stack : MonoBehaviour
                 result.Add(new StackTask(TaskType.Change,cardIds.FindLastIndex(x => x == 2),11));
             }else if(cardIds[0] == 11 && cardIds.FindLastIndex(x => x == 5) != -1){
                 if(stackedCards[0].resourceNum < 10){
-                    result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),1));
+                    result.Add(new StackTask(TaskType.Idle,0,1));
+                    result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),0));
                     result.Add(new StackTask(TaskType.ChangeCardValue,0,1));
+                    
                 }
-            }else if(cardIds[0] == 12 && cardIds.FindLastIndex(x => x == 5) != -1){
-                if(stackedCards[0].resourceNum < 15){
-                    result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),2));
+            }
+            else if(cardIds[0] == 12 && cardIds.FindLastIndex(x => x == 5) != -1){
+                // if(stackedCards[0].resourceNum < 15){
+                    result.Add(new StackTask(TaskType.Idle,0,1));
+                    result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),0));
                     result.Add(new StackTask(TaskType.ChangeCardValue,0,1));
-                }
-            }else if(cardIds[0] == 13 && cardIds.FindLastIndex(x => x == 5) != -1){
+                    
+                // }
+            }
+            else if(cardIds[0] == 13 && cardIds.FindLastIndex(x => x == 5) != -1){
                 if(stackedCards[0].resourceNum < 20){
-                    result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),1));
+                    result.Add(new StackTask(TaskType.Idle,0,1));
+                    result.Add(new StackTask(TaskType.Destroy,cardIds.FindLastIndex(x => x == 5),0));
                     result.Add(new StackTask(TaskType.ChangeCardValue,0,1));
+                    
                 }
             }else if(cardIds[0] == 14 && cardIds[1] == 1 && cardIds.FindLastIndex(x => x ==1) != 1){ // mutiple human card
                 result.Add(new StackTask(TaskType.Idle,0,30));
@@ -131,10 +139,24 @@ public class Stack : MonoBehaviour
         }else if(cardIds.Count == 1){
             if(cardIds[0] == 6){
                 result.Add(new StackTask(TaskType.Create,5,getSolarPlaneTaskTime()));
-            }
-            if(cardIds[0] == 7)
+            }else if(cardIds[0] == 7){
                 result.Add(new StackTask(TaskType.Create,5,getWindTurbineTaskTime()));
+            }else if(cardIds[0] == 12){
+                if(stackedCards[0].resourceNum < 20){
+                    int time = getHydroelectricityTaskTime();
+                    if(time >0){
+                        result.Add(new StackTask(TaskType.Idle,0,getHydroelectricityTaskTime()));
+                        result.Add(new StackTask(TaskType.ChangeCardValue,0,1));
+                    }
+                    
+                }
+                
+            }
         }
+            // }else if(cardIds[0] == 12){
+            //     result.Add(new StackTask(TaskType.Idle,0,getHydroelectricityTaskTime()));
+            //     result.Add(new StackTask(TaskType.ChangeCardValue,0,1));
+            // }
         return result;
     }
 
@@ -176,6 +198,22 @@ public class Stack : MonoBehaviour
             result = 20;
             break;
             
+        }
+        return result;
+    }
+
+    private int getHydroelectricityTaskTime(){
+        int result = -1;
+        switch(GameManager.Instance.currentWeatherState){
+            case WeatherState.Rainy:
+            result = 10;
+            break;
+            case WeatherState.Rainstorms:
+            result = 6;
+            break;
+            default:
+            result = -1;
+            break;   
         }
         return result;
     }
@@ -226,6 +264,7 @@ public class Stack : MonoBehaviour
 
             case TaskType.Idle://use to add task time, and combine with other Tasks
                 Debug.Log("Idle");
+                checkStackState();
             break;
             
         }

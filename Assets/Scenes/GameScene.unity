@@ -984,7 +984,7 @@ PrefabInstance:
     - target: {fileID: 3335561277953737645, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: cardData
       value: 
-      objectReference: {fileID: 11400000, guid: ac44d0f03ca67d0428e81d183146b3c2, type: 2}
+      objectReference: {fileID: 11400000, guid: 8876367d36d24e344972fb2123d1551f, type: 2}
     - target: {fileID: 3335561277953737646, guid: 471be557bd53f914da1e7da051bd4798, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2231,6 +2231,7 @@ MonoBehaviour:
   barName: 
   Bar: {fileID: 759609069}
   maxValue: 20
+  minValue: 0
   currentValue: 0
 --- !u!114 &759609069
 MonoBehaviour:
@@ -2276,10 +2277,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 245714691}
   m_HandleRect: {fileID: 0}
   m_Direction: 2
-  m_MinValue: 0
-  m_MaxValue: 20
+  m_MinValue: -50
+  m_MaxValue: 50
   m_WholeNumbers: 0
-  m_Value: 10
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5086,6 +5087,8 @@ MonoBehaviour:
   WholeCardsList: []
   WholeStacksList: []
   WeatherCardDeck: 
+  BadWeatherCardDeck: 
+  GoodWeatherCardDeck: 
   canvasTransform: {fileID: 0}
   cardDatas: []
   weatherCardDatas: []
@@ -6992,10 +6995,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 8036828749517294684}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 20
+  m_MinValue: -50
+  m_MaxValue: 50
   m_WholeNumbers: 0
-  m_Value: 10
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7518,4 +7521,5 @@ MonoBehaviour:
   barName: 
   Bar: {fileID: 1868054057068319393}
   maxValue: 20
+  minValue: 0
   currentValue: 0

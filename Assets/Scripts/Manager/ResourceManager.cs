@@ -15,7 +15,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
     [SerializeField] List<Card> WholeCardsList;
     [SerializeField] List<Stack> WholeStacksList;
-    public List<WeatherState> WeatherCardDeck;//todo
+    public List<WeatherState> WeatherCardDeck;
     public List<WeatherState> BadWeatherCardDeck;
     public List<WeatherState> GoodWeatherCardDeck;
 
@@ -91,8 +91,8 @@ public class ResourceManager : Singleton<ResourceManager>
     public int getElectricityCardRequire(){//todo
         int result =0 ;
         foreach(Card cards in WholeCardsList){
-            if(cards.cardData != null && cards.cardData.cardId == 8){
-                result += 4;
+            if(cards.cardData != null && (cards.cardData.cardId == 8 || cards.cardData.cardId == 4)){
+                result += 2;
             }
         }
         return result;
@@ -115,16 +115,60 @@ public class ResourceManager : Singleton<ResourceManager>
         return result;
     }
 
+    public void addingRewardResisdentCapacity(int num){
+        rewardResisdentCapacity+=num;
+    }
+
     public int getRewardResisdentCapacity(){
         return this.rewardResisdentCapacity;
     }
 
-    public void consumeElectricity(int num){//todo
+    public void consumeElectricity(int num){
         for(int i =0 ; i <WholeCardsList.Count; i++){
             if(WholeCardsList[i].cardData.cardId == 5 && num > 0){
                 WholeCardsList[i].consumeThisCard();
                 num --;
+            }else if(num > 0 && (WholeCardsList[i].cardData.cardId == 11 || WholeCardsList[i].cardData.cardId == 12 || WholeCardsList[i].cardData.cardId == 13)){
+                int consumeNum = Mathf.Min(num,WholeCardsList[0].resourceNum);
+                num -= consumeNum;
+                WholeCardsList[0].resourceNum -= consumeNum;
             }
+        }
+    }
+
+    public void consumeHuman(int num){
+        for(int i =0 ; i <WholeCardsList.Count; i++){
+            if(WholeCardsList[i].cardData.cardId == 1 && num > 0){
+                WholeCardsList[i].consumeThisCard();
+                num --;
+            }
+        }
+        if(ResourceManager.Instance.getTargetCardsNum(1) <= 0){
+            GameManager.Instance.UpdateGameState(GameState.GameOver);
+        }
+    }
+
+    public void consumeStorageElectricity(){
+        for(int i =0 ; i <WholeCardsList.Count; i++){
+            if(WholeCardsList[i].cardData.cardId == 11 || WholeCardsList[i].cardData.cardId == 12){
+                WholeCardsList[i].resourceNum = (int)(WholeCardsList[i].resourceNum*0.7);
+            }
+
+        }
+    }
+
+    public void consumeLifeSpanOfSomeCard(){
+        for(int i =0 ; i <WholeCardsList.Count; i++){
+            if(WholeCardsList[i].cardData.cardId == 6 || WholeCardsList[i].cardData.cardId == 7){
+                WholeCardsList[i].resourceNum -=1;
+                if(WholeCardsList[i].cardData.cardId == 7 && GameManager.Instance.currentWeatherState == WeatherState.AirPollution){
+                    WholeCardsList[i].resourceNum -=2;
+                }
+                if(WholeCardsList[i].resourceNum<=0){
+                    WholeCardsList[i].consumeThisCard();
+                } 
+            }
+
         }
     }
 
@@ -188,6 +232,26 @@ public class ResourceManager : Singleton<ResourceManager>
 
     public void IdealSolutionCard(){
         BadWeatherCardDeck.Clear();
+    }
+
+    public void handleBar(NormalBarControl bar, bool MaxOrMin){
+        switch (bar.barName){
+            case "HumanitiesBar":
+            if(MaxOrMin){
+                MarketManager.Instance.purchasedCards.Add(ResourceManager.Instance.cardDatas[14]);
+            }else{
+                GameManager.Instance.strikeRoundNum += 3;
+            }
+            break;
+            case "NatureBar":
+            if(MaxOrMin){
+                rewardResisdentCapacity += 3;
+            }else{
+                BadWeatherCardDeck.Add(WeatherState.AirPollution);
+            }
+            break;
+        }
+        bar.resetBar();
     }
 
 

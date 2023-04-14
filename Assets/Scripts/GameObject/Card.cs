@@ -240,12 +240,19 @@ public class Card : MonoBehaviour
         if (currentStack == null && GameManager.Instance.State != GameState.Market){ // test code todo remove it in future
             createStack();      
         }
+        // if(cardId == 6 ||cardId == 7 ||cardId == 12){
+        //     GameManager.onWeatherStateChange += CardOnWeatherChange;
+        // }
         
         
         
         if(GameManager.Instance.State == GameState.PlayerTurn) isMove = true;
 
     }
+
+    // public void CardOnWeatherChange(WeatherState state){
+    //     currentStack.checkStackState();
+    // }
 
     public void loadCardData(){
         if(cardData != null){
@@ -276,7 +283,9 @@ public class Card : MonoBehaviour
         GameObject newStack = Instantiate(ResourceManager.Instance.stackTemple,this.transform.parent);
         this.transform.SetParent(newStack.transform);
         currentStack = newStack.GetComponent<Stack>();
-        currentStack.checkStackState();
+        if(GameManager.Instance.State==GameState.PlayerTurn){
+            currentStack.checkStackState();
+        }
         ResourceManager.Instance.addingStackList(currentStack);
     }
 
@@ -305,6 +314,7 @@ public class Card : MonoBehaviour
         if(!isInStore){
             ResourceManager.Instance.removingCardList(this);
         }
+        // GameManager.onWeatherStateChange -= CardOnWeatherChange;
     }
 
 

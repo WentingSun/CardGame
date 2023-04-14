@@ -16,5 +16,5 @@ MonoBehaviour:
   cardName: Wind turbine
   description: This is Wind turbine
   cardPic: {fileID: 21300000, guid: f47ade17cf980584180f2f123431b884, type: 3}
-  resourceNum: 14
+  resourceNum: 7
   basicPrice: 5
