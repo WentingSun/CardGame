@@ -138,9 +138,15 @@ public class Stack : MonoBehaviour
             }
         }else if(cardIds.Count == 1){
             if(cardIds[0] == 6){
-                result.Add(new StackTask(TaskType.Create,5,getSolarPlaneTaskTime()));
+                float taskTime = getSolarPlaneTaskTime();
+                if(taskTime != -1){
+                    result.Add(new StackTask(TaskType.Create,5,getSolarPlaneTaskTime()));
+                }
             }else if(cardIds[0] == 7){
-                result.Add(new StackTask(TaskType.Create,5,getWindTurbineTaskTime()));
+                float taskTime = getWindTurbineTaskTime();
+                if(taskTime != -1){
+                    result.Add(new StackTask(TaskType.Create,5,getWindTurbineTaskTime()));
+                }
             }else if(cardIds[0] == 12){
                 if(stackedCards[0].resourceNum < 15){
                     int time = getHydroelectricityTaskTime();
