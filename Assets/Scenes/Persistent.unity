@@ -170,6 +170,8 @@ MonoBehaviour:
   State: 0
   currentWeatherState: 0
   currentSeasonState: 0
+  TurnNum: 1
+  strikeRoundNum: 0
   turnScale: 60
 --- !u!1 &1526874803
 GameObject:

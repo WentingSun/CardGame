@@ -56,6 +56,11 @@ public class ResourceManager : Singleton<ResourceManager>
     private void ResourceManagerOnGameStateChanged(GameState gameState){
     if(gameState == GameState.PlayerTurn){
         setAllCardActivity(true);
+        foreach(Card card in WholeCardsList){
+            if(card.cardData.cardId == 6 || card.cardData.cardId == 7){
+                card.currentStack.checkStackState();
+            }
+        }
         }else{
         setAllCardActivity(false);
         }
@@ -91,8 +96,11 @@ public class ResourceManager : Singleton<ResourceManager>
     public int getElectricityCardRequire(){//todo
         int result =0 ;
         foreach(Card cards in WholeCardsList){
-            if(cards.cardData != null && (cards.cardData.cardId == 8 || cards.cardData.cardId == 4)){
+            if(cards.cardData != null && (cards.cardData.cardId == 8 || cards.cardData.cardId == 4 || cards.cardData.cardId == 16)){
                 result += 2;
+                if(GameManager.Instance.currentSeasonState == SeasonState.Summer || GameManager.Instance.currentSeasonState == SeasonState.Winter){
+                    result += 1;
+                }
             }
         }
         return result;
@@ -257,6 +265,14 @@ public class ResourceManager : Singleton<ResourceManager>
             break;
         }
         bar.resetBar();
+    }
+
+    public void resetWholeCard(){
+        if(WholeCardsList.Count !=0){
+            foreach(Card card in WholeCardsList){
+                card.consumeThisCard();
+            }
+        }
     }
 
 

@@ -94,11 +94,11 @@ public class Stack : MonoBehaviour
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 result.Add(new StackTask(TaskType.ChangeBarValue,0,-5));
                 result.Add(new StackTask(TaskType.Change,cardIds.FindLastIndex(x => x == 2),5));  
-            }else if(cardIds[0] == 6  && cardIds[1] == 1){
+            }else if(cardIds[0] == 6  && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 float taskValue = Mathf.Min(20-stackedCards[0].resourceNum,5);
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,taskValue));
-            }else if(cardIds[0] == 7  && cardIds[1] == 1){
+            }else if(cardIds[0] == 7  && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 float taskValue = Mathf.Min(14-stackedCards[0].resourceNum,3);
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,taskValue));

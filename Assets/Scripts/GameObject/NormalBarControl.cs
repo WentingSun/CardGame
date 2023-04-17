@@ -37,6 +37,21 @@ public class NormalBarControl : MonoBehaviour
         minValue = Bar.minValue;
     }
 
+    private void OnMouseOver(){
+        string message = "";
+        switch(name){
+            case "NatureBar":
+            message = $"This is NatureBar. This is a indicator represents the environment. \n\nMax value is {maxValue}. Min value is {minValue}. Current Value is {Bar.value}. \n\nAt the beginning of each round, the current value will increase by 15 points due to the self-healing ability of nature. ";
+            break;
+            case "HumanitiesBar":
+            message = $"This is HumanitiesBar. This is similar to HDI. \n\nMax value is {maxValue}. Min value is {minValue}. Current Value is {Bar.value}. \n\nAt the beginning of each round, the current value will increase based on the number of consecutive rounds that nobody is working in harsh conditions.";
+            break;
+
+        }
+
+        InformationManager.Instance.showInInformationBox(message,true);
+   }
+
 
     // Start is called before the first frame update
     void Start()

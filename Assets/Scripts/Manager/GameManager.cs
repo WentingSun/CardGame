@@ -59,6 +59,10 @@ public class GameManager : Singleton<GameManager>
     private void HandleStart(){
         // ResourceManager.Instance.resetAllStackPos();
         // InformationManager.Instance.updateSmartMeterInfo();
+        if(TurnNum == 1){
+            Debug.Log("First Turn");
+            initTheFirstTurn();
+        }
         resetTurnBar();
         consumeElectricityInStorage();
         supplyTheProduct();
@@ -68,6 +72,7 @@ public class GameManager : Singleton<GameManager>
         if(consecutiveTurn != 0){
             rewardHumanitierBar();
         }
+        rewardNatureBar();
         ResourceManager.Instance.changeNaturalBarValue(5);
         resetTheMarket();
         playerGrabTheCurrentWeather();
@@ -91,6 +96,8 @@ public class GameManager : Singleton<GameManager>
             TurnNum += 1;
             if(currentWeatherState != WeatherState.AirPollution){
                 consecutiveTurn += 1;
+            }else{
+                consecutiveTurn = 0;
             }
             if(strikeRoundNum > 0){
                 strikeRoundNum -= 1;
@@ -107,6 +114,7 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleGamerOver(){
         Debug.Log("game over");
+        MenuManager.Instance.GameOverMenu.SetActive(true);
     }
 
     private bool checkCountinue(){
@@ -164,10 +172,38 @@ public class GameManager : Singleton<GameManager>
         ResourceManager.Instance.changeHumanitiesBarValue(consecutiveTurn+3);
     }
 
-    private void initTurn(){
+    private void rewardNatureBar(){
+        ResourceManager.Instance.changeNaturalBarValue(15);
+    }
+
+    public void initTheGame(){
+        Debug.Log("Testing");
+        TurnNum = 1;
+        consecutiveTurn = 0;
+        initTheFirstTurn();
+    }
+
+    public void initTheFirstTurn(){
+        if(ResourceManager.Instance == null){
+            Debug.Log("NULL");
+        }else{
+            ResourceManager.Instance.GoodWeatherCardDeck = WeatherStateConstants.SpringWeatherStates;
+            ResourceManager.Instance.BadWeatherCardDeck.Clear();
+            ResourceManager.Instance.resetWholeCard();
+            MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[1]);
+            MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[3]);
+            MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[4]);
+            MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[8]);
+            MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[6]);
+        }
 
     }
 
+
+    public void QuitTheGame(){
+        Debug.Log("Quit");
+        Application.Quit();
+    }
     
 
 

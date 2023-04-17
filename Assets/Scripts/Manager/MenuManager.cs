@@ -9,11 +9,12 @@ public class MenuManager : Singleton<MenuManager>
 
     public GameObject WeatherMenu;
     public GameObject MarketMenu;
-
+    public GameObject GameOverMenu;
     public void loadMenu(){
-        // Debug.Log("Loadmenu");
+
         WeatherMenu = ResourceManager.Instance.canvasTransform.Find("WeatherMenu").gameObject;
         MarketMenu = ResourceManager.Instance.canvasTransform.Find("MarketMenu").gameObject;
+        GameOverMenu = ResourceManager.Instance.canvasTransform.Find("GameOverMenu").gameObject;
 
     }
 
@@ -44,7 +45,8 @@ public class MenuManager : Singleton<MenuManager>
 
     private void MenuManagerOnGameStateChanged(GameState newState){
         if(WeatherMenu == null 
-        || MarketMenu == null){
+        || MarketMenu == null
+        || GameOverMenu == null){
             loadMenu();
         }
     }
