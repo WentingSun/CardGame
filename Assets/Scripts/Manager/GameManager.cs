@@ -20,6 +20,7 @@ public class GameManager : Singleton<GameManager>
 
     public static event Action<GameState> OnGameStateChange;
     public static event Action<WeatherState> onWeatherStateChange;
+    public static event Action<SeasonState> onSeasonStateChange;
     
     public void UpdateGameState(GameState newState){
         State = newState;
@@ -49,6 +50,10 @@ public class GameManager : Singleton<GameManager>
 
     }
 
+    public void UpdateSeasonState(SeasonState seasonState){
+        onSeasonStateChange?.Invoke(seasonState);
+    }
+
     public void UpdateWeatherState(WeatherState newWeatherState){
         currentWeatherState = newWeatherState;
 
@@ -68,6 +73,9 @@ public class GameManager : Singleton<GameManager>
         supplyTheProduct();
         if(TurnNum % 4 == 3){
             addingNewHuman();
+        }
+        if(TurnNum%4 == 0){
+            changeSeason();
         }
         if(consecutiveTurn != 0){
             rewardHumanitierBar();
@@ -115,6 +123,7 @@ public class GameManager : Singleton<GameManager>
     private void HandleGamerOver(){
         Debug.Log("game over");
         MenuManager.Instance.GameOverMenu.SetActive(true);
+        MenuManager.Instance.GameOverMenu.transform.SetSiblingIndex(10000);
     }
 
     private bool checkCountinue(){
@@ -172,6 +181,24 @@ public class GameManager : Singleton<GameManager>
         ResourceManager.Instance.changeHumanitiesBarValue(consecutiveTurn+3);
     }
 
+    private void changeSeason(){
+        switch(currentSeasonState){
+            case SeasonState.Spring:
+            UpdateSeasonState(SeasonState.Summer);
+            break;
+            case SeasonState.Summer:
+            UpdateSeasonState(SeasonState.Autumm);
+            break;
+            case SeasonState.Autumm:
+            UpdateSeasonState(SeasonState.Winter);
+            break;
+            case SeasonState.Winter:
+            UpdateSeasonState(SeasonState.Spring);
+            break;
+
+        }
+    }
+
     private void rewardNatureBar(){
         ResourceManager.Instance.changeNaturalBarValue(15);
     }
@@ -195,6 +222,8 @@ public class GameManager : Singleton<GameManager>
             MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[4]);
             MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[8]);
             MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[6]);
+            ResourceManager.Instance.resetHumanitierBarValue();
+            ResourceManager.Instance.resetHumanitierBarValue();
         }
 
     }

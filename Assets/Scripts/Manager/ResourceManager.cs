@@ -38,6 +38,7 @@ public class ResourceManager : Singleton<ResourceManager>
         cardPic = Resources.LoadAll<Sprite>("Image/CardPic");
         weatherCardPic = Resources.LoadAll<Sprite>("Image/WeatherCardPic");
         GameManager.OnGameStateChange += ResourceManagerOnGameStateChanged;
+        GameManager.onSeasonStateChange +=ResourceManagerOnSeasonChange;
         weatherDictionary = weatherCardDatas.ToDictionary(x => x.weatherState, x =>x);
         GoodWeatherCardDeck = WeatherStateConstants.SpringWeatherStates;
         WeatherCardDeck.AddRange(GoodWeatherCardDeck);
@@ -63,6 +64,24 @@ public class ResourceManager : Singleton<ResourceManager>
         }
         }else{
         setAllCardActivity(false);
+        }
+    }
+
+    private void ResourceManagerOnSeasonChange(SeasonState seasonState){
+        switch(seasonState){
+            case SeasonState.Spring:
+            GoodWeatherCardDeck = WeatherStateConstants.SpringWeatherStates;
+            break;
+            case SeasonState.Summer:
+            GoodWeatherCardDeck = WeatherStateConstants.SummerWeatherStates;
+            break;
+            case SeasonState.Autumm:
+            GoodWeatherCardDeck = WeatherStateConstants.AutummWeatherStates;
+            break;
+            case SeasonState.Winter:
+            GoodWeatherCardDeck = WeatherStateConstants.WinterWeatherStates;
+            break;
+
         }
     }
 
@@ -217,6 +236,14 @@ public class ResourceManager : Singleton<ResourceManager>
         HumanitiesBar.changeCurrentBarValue(changeValue);
     }
 
+    public void resetNaturalBarValue(){
+        NaturalBar.resetBar();
+    }
+
+    public void resetHumanitierBarValue(){
+        HumanitiesBar.resetBar();
+    }
+
     public void addingCardList(Card card){
         WholeCardsList.Add(card);
         InformationManager.Instance.updateSmartMeterInfo();
@@ -280,6 +307,7 @@ public class ResourceManager : Singleton<ResourceManager>
     override protected void OnDestroy() {
         base.OnDestroy();
         GameManager.OnGameStateChange -= ResourceManagerOnGameStateChanged;
+        GameManager.onSeasonStateChange -= ResourceManagerOnSeasonChange;
     }
 
 

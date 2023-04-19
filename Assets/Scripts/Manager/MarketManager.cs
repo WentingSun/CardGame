@@ -55,6 +55,7 @@ public class MarketManager : Singleton<MarketManager>
         foreach(CardData cardData in purchasedCards){
             provideCard(cardData);
         }
+        purchasedCards.Clear();
     }
 
     public void provideCard(CardData cardData){

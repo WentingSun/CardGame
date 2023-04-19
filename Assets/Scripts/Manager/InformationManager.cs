@@ -146,6 +146,11 @@ public class InformationManager : Singleton<InformationManager>
             case 13:
             result += $"The stored amount of electricity is {resourceNum}.";
             break;
+            case 1:
+            if(ResourceManager.Instance.BadWeatherCardDeck.Contains(GameManager.Instance.currentWeatherState)){
+            result += "\n\nPeople should not work in bad weather like now. It will decrease humanities bar value when people work.";
+            }
+            break;
             default:
             result = "";
             break;
