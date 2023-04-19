@@ -224,6 +224,7 @@ public class GameManager : Singleton<GameManager>
             MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[6]);
             ResourceManager.Instance.resetHumanitierBarValue();
             ResourceManager.Instance.resetHumanitierBarValue();
+            ResourceManager.Instance.resetTurnBar(60);
         }
 
     }
