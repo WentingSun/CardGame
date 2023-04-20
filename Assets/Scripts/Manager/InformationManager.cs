@@ -129,10 +129,10 @@ public class InformationManager : Singleton<InformationManager>
             result += $"The remaining number of excavation attempts is {resourceNum}.";
             break;
             case 6:
-            result += $"Remaining lifespan is {resourceNum}.";
+            result += $"Remaining lifespan is {resourceNum} turns.";
             break;
             case 7:
-            result += $"Remaining lifespan is {resourceNum}.";
+            result += $"Remaining lifespan is {resourceNum} turns.";
             break;
             case 10:
             result += $"The remaining number of excavation attempts is {resourceNum}.";

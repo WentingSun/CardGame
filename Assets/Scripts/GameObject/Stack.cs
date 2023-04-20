@@ -81,14 +81,14 @@ public class Stack : MonoBehaviour
             if(cardIds[0] == 3 && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,-1));
-                result.Add(new StackTask(TaskType.Create,2,5));
+                result.Add(new StackTask(TaskType.Create,2,0));
                 result.Add(new StackTask(TaskType.ChangeBarValue,0,-4));
                 if(stackedCards[0].resourceNum - 1 == 0)result.Add(new StackTask(TaskType.Destroy,0,-1));
                 if(GameManager.Instance.currentWeatherState == WeatherState.AirPollution) result.Add(new StackTask(TaskType.ChangeBarValue,1,-7));
             }else if(cardIds[0] == 10 && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,-1));
-                result.Add(new StackTask(TaskType.Create,2,9));
+                result.Add(new StackTask(TaskType.Create,9,0));
                 result.Add(new StackTask(TaskType.ChangeBarValue,0,-4));
                 if(stackedCards[0].resourceNum - 1 == 0)result.Add(new StackTask(TaskType.Destroy,0,-1));
                 if(GameManager.Instance.currentWeatherState == WeatherState.AirPollution) result.Add(new StackTask(TaskType.ChangeBarValue,1,-7));
@@ -96,16 +96,21 @@ public class Stack : MonoBehaviour
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 result.Add(new StackTask(TaskType.ChangeBarValue,0,-5));
                 result.Add(new StackTask(TaskType.Change,cardIds.FindLastIndex(x => x == 2),5));  
-            }else if(cardIds[0] == 6  && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
+            }else if(cardIds[0] == 6  && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0 && stackedCards[0].resourceNum <= 20){
                 result.Add(new StackTask(TaskType.Idle,0,5));
-                float taskValue = Mathf.Min(20-stackedCards[0].resourceNum,5);
+                float taskValue = Mathf.Min((20-stackedCards[0].resourceNum),5);
+               
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,taskValue));
-            }else if(cardIds[0] == 7  && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
+                result.Add(new StackTask(TaskType.Idle,0,0));
+            }else if(cardIds[0] == 7  && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0 && stackedCards[0].resourceNum <= 14){
                 result.Add(new StackTask(TaskType.Idle,0,5));
-                float taskValue = Mathf.Min(14-stackedCards[0].resourceNum,3);
+                Debug.Log((14-stackedCards[0].resourceNum));
+                float taskValue = Mathf.Min((14-stackedCards[0].resourceNum),3);
+                
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,taskValue));
+                result.Add(new StackTask(TaskType.Idle,0,0));
             }else if(cardIds[0] == 16 && cardIds.FindLastIndex(x => x == 9) != -1){
-                result.Add(new StackTask(TaskType.Idle,0,5));
+                result.Add(new StackTask(TaskType.Idle,0,30));
                 result.Add(new StackTask(TaskType.ChangeBarValue,0,-10));
                 result.Add(new StackTask(TaskType.Change,cardIds.FindLastIndex(x => x == 2),11));
             }else if(cardIds[0] == 11 && cardIds.FindLastIndex(x => x == 5) != -1){

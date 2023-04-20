@@ -41,6 +41,8 @@ public class GameManager : Singleton<GameManager>
             case GameState.Market:
             HandleMarKet();
             break;
+            case GameState.Pause:
+            break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState , null);
 
@@ -205,7 +207,6 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void initTheGame(){
-        Debug.Log("Testing");
         TurnNum = 1;
         consecutiveTurn = 0;
         initTheFirstTurn();

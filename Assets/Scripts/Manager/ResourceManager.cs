@@ -39,6 +39,7 @@ public class ResourceManager : Singleton<ResourceManager>
         weatherCardPic = Resources.LoadAll<Sprite>("Image/WeatherCardPic");
         GameManager.OnGameStateChange += ResourceManagerOnGameStateChanged;
         GameManager.onSeasonStateChange +=ResourceManagerOnSeasonChange;
+        GameManager.onWeatherStateChange +=ResourceManagerOnWeatherChange;
         weatherDictionary = weatherCardDatas.ToDictionary(x => x.weatherState, x =>x);
         GoodWeatherCardDeck = WeatherStateConstants.SpringWeatherStates;
         WeatherCardDeck.AddRange(GoodWeatherCardDeck);
@@ -55,18 +56,23 @@ public class ResourceManager : Singleton<ResourceManager>
     }
 
     private void ResourceManagerOnGameStateChanged(GameState gameState){
-    if(gameState == GameState.PlayerTurn){
+    if(gameState == GameState.PlayerTurn || gameState == GameState.Pause){
         setAllCardActivity(true);
         }else{
         setAllCardActivity(false);
         }
-        if(gameState == GameState.Start){
+        
+    }
+
+    public void ResourceManagerOnWeatherChange(WeatherState currentState){
+        
             foreach(Card card in WholeCardsList){
             if(card.cardData.cardId == 6 || card.cardData.cardId == 7){
                 card.currentStack.checkStackState();
                 }
             }
-        }
+        
+
     }
 
     private void ResourceManagerOnSeasonChange(SeasonState seasonState){
@@ -311,6 +317,7 @@ public class ResourceManager : Singleton<ResourceManager>
         base.OnDestroy();
         GameManager.OnGameStateChange -= ResourceManagerOnGameStateChanged;
         GameManager.onSeasonStateChange -= ResourceManagerOnSeasonChange;
+        GameManager.onWeatherStateChange -=ResourceManagerOnWeatherChange;
     }
 
 
