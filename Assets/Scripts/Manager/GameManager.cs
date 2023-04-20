@@ -147,6 +147,7 @@ public class GameManager : Singleton<GameManager>
         int currentResidentCapacity = ResourceManager.Instance.getResidentCapacityNum();
         if(currentHumanNum > currentResidentCapacity){
             ResourceManager.Instance.consumeHuman(currentHumanNum - currentResidentCapacity);
+            ResourceManager.Instance.changeHumanitiesBarValue(-40*(currentHumanNum - currentResidentCapacity));
         }
     }
 
@@ -222,6 +223,7 @@ public class GameManager : Singleton<GameManager>
             MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[4]);
             MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[8]);
             MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[6]);
+            MarketManager.Instance.provideCard(ResourceManager.Instance.cardDatas[7]);
             ResourceManager.Instance.resetHumanitierBarValue();
             ResourceManager.Instance.resetHumanitierBarValue();
             ResourceManager.Instance.resetTurnBar(60);
@@ -235,6 +237,17 @@ public class GameManager : Singleton<GameManager>
         Application.Quit();
     }
     
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if(State == GameState.PlayerTurn){
+                UpdateGameState(GameState.Pause);
+            }else if(State == GameState.Pause){
+                UpdateGameState(GameState.PlayerTurn);
+            }
+            
+        }
+    }
 
 
 

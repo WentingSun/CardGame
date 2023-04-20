@@ -82,12 +82,14 @@ public class Stack : MonoBehaviour
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,-1));
                 result.Add(new StackTask(TaskType.Create,2,5));
+                result.Add(new StackTask(TaskType.ChangeBarValue,0,-4));
                 if(stackedCards[0].resourceNum - 1 == 0)result.Add(new StackTask(TaskType.Destroy,0,-1));
                 if(GameManager.Instance.currentWeatherState == WeatherState.AirPollution) result.Add(new StackTask(TaskType.ChangeBarValue,1,-7));
             }else if(cardIds[0] == 10 && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,-1));
                 result.Add(new StackTask(TaskType.Create,2,9));
+                result.Add(new StackTask(TaskType.ChangeBarValue,0,-4));
                 if(stackedCards[0].resourceNum - 1 == 0)result.Add(new StackTask(TaskType.Destroy,0,-1));
                 if(GameManager.Instance.currentWeatherState == WeatherState.AirPollution) result.Add(new StackTask(TaskType.ChangeBarValue,1,-7));
             }else if(cardIds[0] == 4 && cardIds.FindLastIndex(x => x == 2) != -1 ){

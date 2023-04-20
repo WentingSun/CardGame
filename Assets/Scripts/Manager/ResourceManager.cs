@@ -57,13 +57,15 @@ public class ResourceManager : Singleton<ResourceManager>
     private void ResourceManagerOnGameStateChanged(GameState gameState){
     if(gameState == GameState.PlayerTurn){
         setAllCardActivity(true);
-        foreach(Card card in WholeCardsList){
-            if(card.cardData.cardId == 6 || card.cardData.cardId == 7){
-                card.currentStack.checkStackState();
-            }
-        }
         }else{
         setAllCardActivity(false);
+        }
+        if(gameState == GameState.Start){
+            foreach(Card card in WholeCardsList){
+            if(card.cardData.cardId == 6 || card.cardData.cardId == 7){
+                card.currentStack.checkStackState();
+                }
+            }
         }
     }
 
@@ -288,6 +290,7 @@ public class ResourceManager : Singleton<ResourceManager>
                 rewardResisdentCapacity += 3;
             }else{
                 BadWeatherCardDeck.Add(WeatherState.AirPollution);
+                updateWeatherDeck();
             }
             break;
         }

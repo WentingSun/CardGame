@@ -16,5 +16,5 @@ MonoBehaviour:
   cardName: Coal Mine
   description: This is Coal Mine
   cardPic: {fileID: 21300000, guid: 7c5da0a46b9bd3b4f91ba7f8820e7c9c, type: 3}
-  resourceNum: 10
-  basicPrice: 10
+  resourceNum: 30
+  basicPrice: 5

@@ -24,9 +24,9 @@ public class NormalBarControl : MonoBehaviour
     public void changeCurrentBarValue(float changeValue){
         currentValue += changeValue;
         Bar.value = currentValue;
-        if(currentValue == maxValue){
+        if(currentValue >= maxValue){
             ResourceManager.Instance.handleBar(this,true);
-        }else if(currentValue == minValue){
+        }else if(currentValue <= minValue){
             ResourceManager.Instance.handleBar(this,false);
         }
     }

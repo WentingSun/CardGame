@@ -148,7 +148,10 @@ public class InformationManager : Singleton<InformationManager>
             break;
             case 1:
             if(ResourceManager.Instance.BadWeatherCardDeck.Contains(GameManager.Instance.currentWeatherState)){
-            result += "\n\nPeople should not work in bad weather like now. It will decrease humanities bar value when people work.";
+                result += "\n\nPeople should not work in bad weather like now. It will decrease humanities bar value when people work.";
+            }
+            if(GameManager.Instance.strikeRoundNum != 0){
+                result += "\nPeople are on strike now.";
             }
             break;
             default:

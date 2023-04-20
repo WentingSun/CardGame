@@ -16,5 +16,5 @@ MonoBehaviour:
   cardName: Li Mine
   description: This is the Mine for Lithium
   cardPic: {fileID: 21300000, guid: 183b9f49425fdd945b7cd7418ad38c17, type: 3}
-  resourceNum: -1
-  basicPrice: 10
+  resourceNum: 30
+  basicPrice: 5
