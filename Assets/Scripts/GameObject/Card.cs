@@ -16,7 +16,6 @@ public class Card : MonoBehaviour
 
     public CardData cardData;//TODO load cardData
 
-    [SerializeField] Transform parentDuringMove;
     [SerializeField] Stack TargetStack;
     [SerializeField] Collider2D touchedCollider;
 

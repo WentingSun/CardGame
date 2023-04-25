@@ -143,7 +143,8 @@ public class Stack : MonoBehaviour
                 result.Add(new StackTask(TaskType.Idle,0,45));
                 result.Add(new StackTask(TaskType.IdealSolutionCard,0,0));
             }
-        }else if(cardIds.Count == 1){
+        }
+        else if(cardIds.Count == 1){
             if(cardIds[0] == 6){
                 float taskTime = getSolarPlaneTaskTime();
                 if(taskTime != -1){

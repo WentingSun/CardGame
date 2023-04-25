@@ -53,6 +53,8 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void UpdateSeasonState(SeasonState seasonState){
+        currentSeasonState =seasonState;
+        
         onSeasonStateChange?.Invoke(seasonState);
     }
 

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MarketMenuButtonControl : MonoBehaviour
 {
-    public List<MarketSlot> marketSlots;
 
     public void ExitButton(){
         MenuManager.Instance.activiteMarketMenu(false);
