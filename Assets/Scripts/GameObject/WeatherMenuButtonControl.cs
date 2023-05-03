@@ -10,7 +10,6 @@ public class WeatherMenuButtonControl : MonoBehaviour
     WeatherState selectedWeather = GameHelperFunction.RandomSelect(ResourceManager.Instance.WeatherCardDeck);
     InformationManager.Instance.setWeatherNotationInfor(selectedWeather);
     GameManager.Instance.UpdateWeatherState(selectedWeather);
-    MenuManager.Instance.loadMenu();
     }
 
     public void confirmButton(){

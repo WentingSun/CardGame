@@ -70,7 +70,6 @@ public class GameManager : Singleton<GameManager>
         // InformationManager.Instance.updateSmartMeterInfo();
         if(TurnNum == 1){
             Debug.Log("First Turn");
-            initTheFirstTurn();
         }
         resetTurnBar();
         consumeElectricityInStorage();
@@ -212,6 +211,7 @@ public class GameManager : Singleton<GameManager>
         TurnNum = 1;
         consecutiveTurn = 0;
         initTheFirstTurn();
+        UpdateGameState(GameState.Start);
     }
 
     public void initTheFirstTurn(){

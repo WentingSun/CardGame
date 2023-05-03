@@ -74,18 +74,18 @@ public class Stack : MonoBehaviour
             
 
 
-    private List<StackTask> checkTheCombine(){//TODO add more combine This function
+    private List<StackTask> checkTheCombine(){
         // Debug.Log("checkTheCombine()");
         List<StackTask> result = new List<StackTask>();
         if(cardIds.Count>1){
-            if(cardIds[0] == 3 && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
+            if(cardIds[0] == 3 && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){//Coal Mine + Human
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,-1));
                 result.Add(new StackTask(TaskType.Create,2,0));
                 result.Add(new StackTask(TaskType.ChangeBarValue,0,-4));
                 if(stackedCards[0].resourceNum - 1 == 0)result.Add(new StackTask(TaskType.Destroy,0,-1));
                 if(GameManager.Instance.currentWeatherState == WeatherState.AirPollution) result.Add(new StackTask(TaskType.ChangeBarValue,1,-7));
-            }else if(cardIds[0] == 10 && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){
+            }else if(cardIds[0] == 10 && cardIds[1] == 1 && GameManager.Instance.strikeRoundNum <= 0){//Li Mine + Human
                 result.Add(new StackTask(TaskType.Idle,0,5));
                 result.Add(new StackTask(TaskType.ChangeCardValue,0,-1));
                 result.Add(new StackTask(TaskType.Create,9,0));
